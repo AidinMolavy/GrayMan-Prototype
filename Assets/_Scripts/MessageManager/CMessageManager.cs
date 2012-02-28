@@ -26,6 +26,17 @@ using System.Collections.Generic;
 		
 	}
 	
+	void Start()
+	{
+		//just for testing
+		CChair.Instance.SetState(STT_CChair_Second.Instance);
+		CChair.Instance.ExecuteState();
+		CMessageManager.Instance.SendMessage(CMessages.eMessages.ChairActive,null);
+		CChair.Instance.SetState(STT_CChair_Second.Instance);
+		CChair.Instance.ExecuteState();
+		CMessageManager.Instance.SendMessage(CMessages.eMessages.ChairActive,null);
+	}
+	
 	/// <summary>
 	/// Registers the observer.
 	/// </summary>
@@ -82,5 +93,7 @@ using System.Collections.Generic;
 		_data    = data;
 		NotifyObsevers();
 	}
+	
+	
 
 }

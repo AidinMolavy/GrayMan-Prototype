@@ -3,12 +3,12 @@ using System.Collections;
 
 public class STT_Public_Enable : MonoBehaviour,IState,IMessageObsever {
 
-	bool _actionPress;
+
 	public static STT_Public_Enable Instance;
 	
 	STT_Public_Enable()
 	{
-		_actionPress = false;
+		
 		Instance = this;
 	}
 	
@@ -20,7 +20,7 @@ public class STT_Public_Enable : MonoBehaviour,IState,IMessageObsever {
 	
 	public int  Execute()
 	{
-
+		//CMessageManager.Instance.SendMessage(CMessages.eMessages.ChairActive,null);
 		return 1;
 	}
 	
