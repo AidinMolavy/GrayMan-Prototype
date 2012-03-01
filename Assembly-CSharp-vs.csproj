@@ -45,17 +45,18 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\_Scripts\Bahram\CBahram.cs" />
+     <Compile Include="Assets\_Scripts\Bahram\CBahram_STT_First.cs" />
+     <Compile Include="Assets\_Scripts\Bahram\CBahram_STT_Second.cs" />
+     <Compile Include="Assets\_Scripts\Bahram\Save\CBahram_Save.cs" />
      <Compile Include="Assets\_Scripts\Chair\CChair.cs" />
-     <Compile Include="Assets\_Scripts\Chair\STT_CChair_First.cs" />
-     <Compile Include="Assets\_Scripts\Chair\STT_CChair_Second.cs" />
+     <Compile Include="Assets\_Scripts\Chair\CChair_STT_First.cs" />
+     <Compile Include="Assets\_Scripts\Chair\CChair_STT_Second.cs" />
      <Compile Include="Assets\_Scripts\MessageManager\CMessageManager.cs" />
      <Compile Include="Assets\_Scripts\MessageManager\CMessages.cs" />
      <Compile Include="Assets\_Scripts\MessageManager\ObserverPattern\IMessageObsever.cs" />
      <Compile Include="Assets\_Scripts\MessageManager\ObserverPattern\IMessageSubject.cs" />
      <Compile Include="Assets\_Scripts\iaObject\CiaObject.cs" />
      <Compile Include="Assets\_Scripts\iaObject\IState.cs" />
-     <Compile Include="Assets\_Scripts\iaObject\STT_Public_Disable.cs" />
-     <Compile Include="Assets\_Scripts\iaObject\STT_Public_Enable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,12 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
-public class STT_Public_Disable : MonoBehaviour,IState,IMessageObsever {
+public class CBahram_STT_First : MonoBehaviour,IState,IMessageObsever {
 	
-	public static STT_Public_Disable Instance;
+	public static CBahram_STT_First Instance;
 
 	
-	STT_Public_Disable()
+	CBahram_STT_First()
 	{
 
 		Instance = this;

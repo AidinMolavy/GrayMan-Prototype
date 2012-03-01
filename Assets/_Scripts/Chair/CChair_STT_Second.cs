@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class STT_CChair_Second : MonoBehaviour,IState,IMessageObsever {
+public class CChair_STT_Second : MonoBehaviour,IState,IMessageObsever {
 	
-	static public STT_CChair_Second Instance;
+	static public CChair_STT_Second Instance;
 	
-	STT_CChair_Second()
+	CChair_STT_Second()
 	{
 
 		Instance = this;
@@ -26,5 +26,10 @@ public class STT_CChair_Second : MonoBehaviour,IState,IMessageObsever {
 		{
 			print("STT_CChair_Second state is activated by chariActive and done its job.");
 		}
+	}
+	
+	void OnPostRender()
+	{
+		print ("post render.");
 	}
 }

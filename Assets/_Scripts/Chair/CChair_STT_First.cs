@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class STT_CChair_First : MonoBehaviour,IState {
+public class CChair_STT_First : MonoBehaviour,IState {
 	
-	static public STT_CChair_First Instance;
+	static public CChair_STT_First Instance;
 	
-	STT_CChair_First()
+	CChair_STT_First()
 	{
 
 		Instance = this;
