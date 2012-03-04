@@ -5,14 +5,21 @@ public class CChair : CiaObject {
 
 	// Use this for initialization
 	public static CChair Instance;
+	public int var1,var2;
 	
-	public int var3,var4;
+	private CChair_SAL _chair_sal;
 	
 	CChair()
 	{
-		var3 = 3;
-		var4 = 4;
+		var1 = 3;
+		var2 = 4;
 		Instance = this;
+		_chair_sal = new CChair_SAL();
+	}
+	
+	void Awake()
+	{
+		
 	}
 
 }

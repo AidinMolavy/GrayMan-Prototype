@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+
 /// <summary>
 ///  message manager.
 ///  must have just one instace in entire program.
@@ -29,12 +33,70 @@ using System.Collections.Generic;
 	void Start()
 	{
 		//just for testing
-		CChair.Instance.SetState(CChair_STT_Second.Instance);
-		CChair.Instance.ExecuteState();
-		CMessageManager.Instance.SendMessage(CMessages.eMessages.ChairActive,null);
-		CChair.Instance.SetState(CChair_STT_Second.Instance);
-		CChair.Instance.ExecuteState();
-		CMessageManager.Instance.SendMessage(CMessages.eMessages.ChairActive,null);
+		
+		
+		CBahram.Instance.var1 = 100;
+		CBahram.Instance.var2 = 200;
+		CChair.Instance.var1 = 300;
+		CChair.Instance.var2 = 400;
+		
+		//Save 		
+		Stream stream =  File.Open("Save",FileMode.Create);
+		BinaryFormatter bFormatter = new BinaryFormatter();
+		bFormatter.Serialize(stream,CBahram_Save.Instance);
+		bFormatter.Serialize(stream,CChair_SAL.Instance);
+		stream.Close();
+		
+		CBahram.Instance.var1 = 5;
+		CBahram.Instance.var2 = 6;
+		CChair.Instance.var1  = 7;
+		CChair.Instance.var2  = 8;		
+		
+		//Load
+		stream = File.Open("Save",FileMode.Open);
+		bFormatter = new BinaryFormatter();
+		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
+		CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
+		stream.Close();
+		
+		//print
+		print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
+		print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
+		
+		
+		
+		CBahram.Instance.var1 = 10;
+		CBahram.Instance.var2 = 20;
+		CChair.Instance.var1 = 30;
+		CChair.Instance.var2 = 40;
+		
+		
+		//Save 2
+	    stream =  File.Open("Save",FileMode.Create);
+	    bFormatter = new BinaryFormatter();
+		bFormatter.Serialize(stream,CBahram_Save.Instance);
+		bFormatter.Serialize(stream,CChair_SAL.Instance);
+		stream.Close();
+
+		CBahram.Instance.var1 = 5;
+		CBahram.Instance.var2 = 6;
+		CChair.Instance.var1  = 7;
+		CChair.Instance.var2  = 8;		
+
+		
+		//Load 2
+		stream = File.Open("Save",FileMode.Open);
+		bFormatter = new BinaryFormatter();
+		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
+		CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
+		stream.Close();
+		
+		
+		//print
+		print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
+		print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
+		
+		
 	}
 	
 	/// <summary>
