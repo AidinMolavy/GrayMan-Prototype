@@ -51,7 +51,7 @@
      <Compile Include="Assets\_Scripts\Chair\CChair.cs" />
      <Compile Include="Assets\_Scripts\Chair\CChair_STT_First.cs" />
      <Compile Include="Assets\_Scripts\Chair\CChair_STT_Second.cs" />
-     <Compile Include="Assets\_Scripts\Chair\SaveAndLoad\CChair_SAL.cs" />
+     <Compile Include="Assets\_Scripts\Chair\SaveAndLoad\CChair_SALAgent.cs" />
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\CiaObject.cs" />
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\IState.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\CMessageManager.cs" />
@@ -59,7 +59,9 @@
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\ObserverPattern\IMessageObsever.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\ObserverPattern\IMessageSubject.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" />
-     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoad.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadTypes.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoadAgent.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndloadClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

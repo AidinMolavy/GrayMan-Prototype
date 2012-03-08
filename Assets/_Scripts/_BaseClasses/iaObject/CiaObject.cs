@@ -11,7 +11,7 @@ public abstract class CiaObject : MonoBehaviour {
 	
 	protected        CiaObject()
 	{
-		States = new List<IState>();	
+		States = new List<IState>();
 	}
 	
 	public    int    ExecuteState()

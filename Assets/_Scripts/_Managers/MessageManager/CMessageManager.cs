@@ -18,16 +18,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 	private CMessages.eMessages   _message;  // message itself.
 	private object                _data;     // message's data.	
 	
-	CMessageManager()
-	{
-		Instance = this;
-		_observers = new List<IMessageObsever>();
-		
-	}
 	
-	void Awake()
+	void Awake ()
 	{
 		
+		Instance = this;
+		_observers = new List<IMessageObsever>(); 
+				
 	}
 	
 	void Start()
@@ -35,66 +32,67 @@ using System.Runtime.Serialization.Formatters.Binary;
 		//just for testing
 		
 		
-		CBahram.Instance.var1 = 100;
-		CBahram.Instance.var2 = 200;
-		CChair.Instance.var1 = 300;
-		CChair.Instance.var2 = 400;
+//		CBahram.Instance.var1 = 100;
+//		CBahram.Instance.var2 = 200;
+//		CChair.Instance.var1 = 300;
+//		CChair.Instance.var2 = 400;
+//		
+//		//Save 		
+//		
+//		Stream stream =  File.Open("save",FileMode.Create);
+//		BinaryFormatter bFormatter = new BinaryFormatter();
+//		bFormatter.Serialize(stream,CBahram_Save.Instance);
+//		//bFormatter.Serialize(stream,CChair_SAL.Instance);
+//		stream.Close();
+//		
+//		CBahram.Instance.var1 = 5;
+//		CBahram.Instance.var2 = 6;
+//		CChair.Instance.var1  = 7;
+//		CChair.Instance.var2  = 8;		
+//		
+//		//Load
+//		stream = File.Open("Save",FileMode.Open);
+//		bFormatter = new BinaryFormatter();
+//		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
+//		//CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
+//		stream.Close();
+//		
+//		//print
+//		//print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
+//		//print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
+//		
+//		
+//		
+//		CBahram.Instance.var1 = 10;
+//		CBahram.Instance.var2 = 20;
+//		CChair.Instance.var1 = 30;
+//		CChair.Instance.var2 = 40;
+//		
+//		
+//		//Save 2
+//	    stream =  File.Open("save",FileMode.Create);
+//	    bFormatter = new BinaryFormatter();
+//		bFormatter.Serialize(stream,CBahram_Save.Instance);
+//		//bFormatter.Serialize(stream,CChair_SAL.Instance);
+//		stream.Close();
+//
+//		CBahram.Instance.var1 = 5;
+//		CBahram.Instance.var2 = 6;
+//		CChair.Instance.var1  = 7;
+//		CChair.Instance.var2  = 8;		
+//
+//		
+//		//Load 2
+//		stream = File.Open("Save",FileMode.Open);
+//		bFormatter = new BinaryFormatter();
+//		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
+//		//CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
+//		stream.Close();
 		
-		//Save 		
-		Stream stream =  File.Open("Save",FileMode.Create);
-		BinaryFormatter bFormatter = new BinaryFormatter();
-		bFormatter.Serialize(stream,CBahram_Save.Instance);
-		bFormatter.Serialize(stream,CChair_SAL.Instance);
-		stream.Close();
-		
-		CBahram.Instance.var1 = 5;
-		CBahram.Instance.var2 = 6;
-		CChair.Instance.var1  = 7;
-		CChair.Instance.var2  = 8;		
-		
-		//Load
-		stream = File.Open("Save",FileMode.Open);
-		bFormatter = new BinaryFormatter();
-		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
-		CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
-		stream.Close();
 		
 		//print
-		print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
-		print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
-		
-		
-		
-		CBahram.Instance.var1 = 10;
-		CBahram.Instance.var2 = 20;
-		CChair.Instance.var1 = 30;
-		CChair.Instance.var2 = 40;
-		
-		
-		//Save 2
-	    stream =  File.Open("Save",FileMode.Create);
-	    bFormatter = new BinaryFormatter();
-		bFormatter.Serialize(stream,CBahram_Save.Instance);
-		bFormatter.Serialize(stream,CChair_SAL.Instance);
-		stream.Close();
-
-		CBahram.Instance.var1 = 5;
-		CBahram.Instance.var2 = 6;
-		CChair.Instance.var1  = 7;
-		CChair.Instance.var2  = 8;		
-
-		
-		//Load 2
-		stream = File.Open("Save",FileMode.Open);
-		bFormatter = new BinaryFormatter();
-		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
-		CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
-		stream.Close();
-		
-		
-		//print
-		print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
-		print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
+		//print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
+		//print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
 		
 		
 	}
@@ -118,8 +116,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 	/// <param name='o'>
 	/// object that do not want to receive messages.
 	/// </param>
-	public bool RemoveObserver(IMessageObsever o)
-	{
+	public bool RemoveObserver(IMessageObsever o){
+		
 		if (_observers.Count > 0)
 			return _observers.Remove(o);
 		return true;
