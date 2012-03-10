@@ -8,14 +8,19 @@ public abstract class CiaObject : MonoBehaviour {
 	private IState _preState;
     protected  List<IState> States;
 	#endregion
-	
-	protected        CiaObject()
-	{
-		States = new List<IState>();
-	}
-	
+
+    #region MonoBehaviour
+    
+    void Awake(){
+        
+        States = new List<IState>();    
+    }
+    
+    
+    #endregion
+    
 	public    int    ExecuteState()
-	{
+    {   
 		int retVal = 0;
 		//debug need. null refrence
     	retVal =  _state.Execute();

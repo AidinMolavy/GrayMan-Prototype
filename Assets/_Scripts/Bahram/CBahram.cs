@@ -3,35 +3,40 @@ using System.Collections;
 
 #pragma warning disable 0414 
 
-public class CBahram : CiaObject{
+public class CBahram : CiaObject,ISaveAndloadClient{
 	
 	public static CBahram Instance;
 	
 	public int var1,var2;
-	private CBahram_Save _bahramSave;//no use. just for creating instance;
-	CBahram()
-	{
-		var1 = 1;
-		var2 = 2;
-		Instance = this;
-		
-	    _bahramSave = new CBahram_Save();//
-	}
 
-	
+    #region MonoBehavior
+     void Awake()
+     {
+        var1 = 1;
+        var2 = 2;
+        Instance = this;         
+     }
+     
+     void Start()
+     {
+         
 
-	#region Mono Behavior
-		void Awake()
-		{
-			
-		}
-		
-		void Start()
-		{
-			
+     }
+    #endregion
 
-		}
-	#endregion	
+    #region Save And Load
+    public void OnSave ()
+    {
+        print("CBahram notify about save.");
+    }
+
+    public void OnLoad ()
+    {
+        print("CBahram notify about load.");
+        print("Var 1 = " + var1.ToString() + " var2 =  " + var2.ToString());    
+    }
+    #endregion
+
 	
 
 

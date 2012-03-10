@@ -10,11 +10,12 @@ public class CChair : CiaObject,ISaveAndloadClient {
 		
 	void Awake(){
 		
-		Instance = this;
+		
 		var1 = 3;
 		var2 = 4;
-		
-		//salAgent = new CChair_SALAgent();
+        Instance = this;
+
+        
 	}
 	public void OnSave ()
 	{

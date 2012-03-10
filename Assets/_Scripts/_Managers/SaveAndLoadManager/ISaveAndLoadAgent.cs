@@ -4,7 +4,7 @@ using System.IO;
 
 public interface ISaveAndLoadAgent
 {
-	List<ISaveAndloadClient> ClientInstance{get;}
+	List<ISaveAndloadClient> ClientsInstances{get;}
 	
 	bool SaveToFile  (ref Stream s, CSaveAndLoadTypes.eFormatters format);
 	bool LoadFromFile(ref Stream s, CSaveAndLoadTypes.eFormatters format);

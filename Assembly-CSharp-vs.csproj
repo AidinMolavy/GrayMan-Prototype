@@ -45,15 +45,17 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\_Scripts\Bahram\CBahram.cs" />
-     <Compile Include="Assets\_Scripts\Bahram\CBahram_STT_First.cs" />
-     <Compile Include="Assets\_Scripts\Bahram\CBahram_STT_Second.cs" />
-     <Compile Include="Assets\_Scripts\Bahram\Save\CBahram_Save.cs" />
+     <Compile Include="Assets\_Scripts\Bahram\CBahram_Temp.cs" />
+     <Compile Include="Assets\_Scripts\Bahram\SaveAndLoad\CBahram_SALAgent.cs" />
+     <Compile Include="Assets\_Scripts\Bahram\States\CBahram_STT_First.cs" />
+     <Compile Include="Assets\_Scripts\Bahram\States\CBahram_STT_Second.cs" />
      <Compile Include="Assets\_Scripts\Chair\CChair.cs" />
      <Compile Include="Assets\_Scripts\Chair\CChair_STT_First.cs" />
      <Compile Include="Assets\_Scripts\Chair\CChair_STT_Second.cs" />
      <Compile Include="Assets\_Scripts\Chair\SaveAndLoad\CChair_SALAgent.cs" />
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\CiaObject.cs" />
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\IState.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\CManagers.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\CMessageManager.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\CMessages.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\ObserverPattern\IMessageObsever.cs" />
@@ -62,6 +64,7 @@
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadTypes.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoadAgent.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndloadClient.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveAndLoadManager_SALAgent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

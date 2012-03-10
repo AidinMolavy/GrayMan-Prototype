@@ -2,13 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs">
     <Files>
-      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" Line="36" Column="14" />
-      <File FileName="Assets\_Scripts\Chair\SaveAndLoad\CChair_SALAgent.cs" Line="76" Column="3" />
-      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoadAgent.cs" Line="8" Column="2" />
-      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndloadClient.cs" Line="6" Column="2" />
-      <File FileName="Assets\_Scripts\Chair\CChair.cs" Line="12" Column="3" />
-      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadTypes.cs" Line="21" Column="24" />
-      <File FileName="f:\AISA TEAM\Game Engine\Unity\Projects\GrayMan\Prototype\GrayMan-Prototype\Assets\_Scripts\_Managers\MessageManager\CMessageManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\Bahram\SaveAndLoad\CBahram_SALAgent.cs" Line="8" Column="30" />
+      <File FileName="Assets\_Scripts\Bahram\CBahram.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveAndLoadManager_SALAgent.cs" Line="33" Column="1" />
+      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" Line="89" Column="1" />
+      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadTypes.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -18,11 +16,9 @@
               <Node name="_Scripts" expanded="True">
                 <Node name="_Managers" expanded="True">
                   <Node name="SaveAndLoadManager" expanded="True">
+                    <Node name="SaveAndLoad" expanded="True" />
                     <Node name="CSaveAndLoadManager.cs" selected="True" />
                   </Node>
-                </Node>
-                <Node name="Chair" expanded="True">
-                  <Node name="SaveAndLoad" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -32,7 +28,11 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="F:\AISA TEAM\Game Engine\Unity\Projects\GrayMan\Prototype\GrayMan-Prototype\Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" line="271" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" line="272" offsetX="140" offsetY="2224" expression="_currentSaveInfo" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>
