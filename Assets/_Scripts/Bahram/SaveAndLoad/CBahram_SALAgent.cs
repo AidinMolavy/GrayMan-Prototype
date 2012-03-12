@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 #pragma warning disable 0414 
 [System.Serializable]
-public class CBahram_SALAgent : MonoBehaviour, ISerializable,ISaveAndLoadAgent  {
+public class CBahram_SALAgent : MonoBehaviour,ISaveAndLoadAgent  {
 	
 	
     private CBahram_SALAgent _instance;

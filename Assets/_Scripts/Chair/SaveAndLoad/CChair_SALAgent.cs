@@ -7,14 +7,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 #pragma warning disable 0414 
 [System.Serializable]
-public class CChair_SALAgent : MonoBehaviour, ISerializable,ISaveAndLoadAgent {
+public class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
 	
 	private static CChair_SALAgent  Instance;
 	private 	   CChair_SALAgent _instance;//temp
 	private        List<ISaveAndloadClient> _clientsInstances;
     private        GameObject               _parent;
-	public int var1;
-	public int var2;
+	public         int var1;
+	public         int var2;
 	
 	public List<ISaveAndloadClient> ClientsInstances {
 		get {
@@ -22,18 +22,18 @@ public class CChair_SALAgent : MonoBehaviour, ISerializable,ISaveAndLoadAgent {
 		}
 	}
 	
-	public CChair_SALAgent(){
+	public      CChair_SALAgent(){
 		
 	}
 	
-	void Awake(){
+	void        Awake(){
     
         _parent = gameObject;//no use currently     
 		_clientsInstances = new List<ISaveAndloadClient>();//just init.     
         _instance = null;//stop warrning
 	}
 	
-	void Start()
+	void        Start()
 	{
 		
         CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
@@ -42,7 +42,7 @@ public class CChair_SALAgent : MonoBehaviour, ISerializable,ISaveAndLoadAgent {
 		
 	}
     
-	public CChair_SALAgent(SerializationInfo info,StreamingContext context)
+	public      CChair_SALAgent(SerializationInfo info,StreamingContext context)
 	{
 		var1 = (int)info.GetValue("var1",typeof(int));
 		var2 = (int)info.GetValue("var2",typeof(int));
@@ -77,7 +77,7 @@ public class CChair_SALAgent : MonoBehaviour, ISerializable,ISaveAndLoadAgent {
 		if (format== CSaveAndLoadTypes.eFormatters.Binary){
 			
 			bFormatter = new BinaryFormatter();
-	    	  _instance = (CChair_SALAgent)bFormatter.Deserialize(s);
+	        _instance = (CChair_SALAgent)bFormatter.Deserialize(s);
 		}
 		return true;
 		

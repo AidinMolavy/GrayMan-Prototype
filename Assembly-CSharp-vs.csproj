@@ -55,6 +55,7 @@
      <Compile Include="Assets\_Scripts\Chair\SaveAndLoad\CChair_SALAgent.cs" />
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\CiaObject.cs" />
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\IState.cs" />
+     <Compile Include="Assets\_Scripts\_Helpers\CDebug.cs" />
      <Compile Include="Assets\_Scripts\_Managers\CManagers.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\CMessageManager.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\CMessages.cs" />
@@ -64,7 +65,7 @@
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadTypes.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoadAgent.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndloadClient.cs" />
-     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveAndLoadManager_SALAgent.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveFileInfo_SALAgent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

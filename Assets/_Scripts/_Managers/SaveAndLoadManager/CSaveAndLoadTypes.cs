@@ -29,10 +29,15 @@ public static class CSaveAndLoadTypes {
 		
 		public stSaveInfo()
 		{
-			info = new stInfo();
+			fileInfo = new stSaveFileInfo();
+            fileInfo.DateAndTime = "Nothing";
+            fileInfo.ElapsedTime =  "Nothing";
+            fileInfo.Index =  -1;
+            fileInfo.SaveCount =  -1;
+            fileInfo.Scene =  "Nothing";
 		}
 		
-		public stInfo info;
+		public stSaveFileInfo fileInfo;
 		public string filePath;//Path of actual save file on storage device.include name of file.
 	}
     
@@ -49,6 +54,15 @@ public static class CSaveAndLoadTypes {
         }
             
         
+    }
+    
+    public class stSaveFileInfo{
+        
+        public int      Index;
+        public int      SaveCount;
+        public string   ElapsedTime;
+        public string   DateAndTime;
+        public string   Scene;      
     }
     
 }

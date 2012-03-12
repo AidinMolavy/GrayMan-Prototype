@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
 
-public interface ISaveAndLoadAgent
+using System.IO;
+using System.Runtime.Serialization;
+
+public interface ISaveAndLoadAgent : ISerializable
 {
 	List<ISaveAndloadClient> ClientsInstances{get;}
 	
