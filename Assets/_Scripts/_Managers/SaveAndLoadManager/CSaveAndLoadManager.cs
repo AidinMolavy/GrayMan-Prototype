@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
+using System;
 using stSaveInfo    = CSaveAndLoadTypes.stSaveInfo;
 using stInfo        = CSaveAndLoadTypes.stInfo;
 using eFormatters   = CSaveAndLoadTypes.eFormatters;
@@ -11,8 +11,19 @@ using stSAL         = CSaveAndLoadTypes.stSAL;
 
 public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 
-	public static CSaveAndLoadManager Instance ;
+    private static ArrayList _instances = new ArrayList();
     
+    public static CSaveAndLoadManager Instance{
+        
+        get{
+            return (CSaveAndLoadManager)CSingleton.GetSingletonInstance( 
+                ref _instances,
+                typeof(CSaveAndLoadManager),
+                CGlobalInfo.stSaveAndLoad.TagName,
+                CGlobalInfo.stSaveAndLoad.GameObjectName);                                                       
+        }
+    }
+     
     private stSaveInfo  _currentSave;	
 
     public stSaveInfo CurrentSave {
@@ -39,6 +50,9 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         get {
             return this._saveCount;
         }
+        set{
+            _saveCount = value;
+        }
     }    
     public string ElapsedTime {
         get {
@@ -52,11 +66,9 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     }    
     public string Scene {
         get {
-            return this._scene;
+            return Application.loadedLevelName;
         }
-        set {
-            _scene = value;
-        }
+
     }
     #endregion
     
@@ -152,81 +164,81 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     #endregion
    
 	void               Awake(){
+        
+        DontDestroyOnLoad(this);
+        
+        _instances.Add(this);// used for implement singleton pattern
+        CSingleton.DestroyExtraInstances(_instances); // remove all of instances of this class except first one.
 		
         _invalideFileNameChars = Path.GetInvalidFileNameChars();
         _invalidePathChars     = Path.GetInvalidPathChars();
-        _currentDirectory = Directory.GetCurrentDirectory();
-        SaveName       =   "sadf";
+        _currentDirectory = Directory.GetCurrentDirectory();             
+        SaveName       =   "save";        
         SaveFolderName = "TmpSave";  
         SaveDirectoy = _currentDirectory;      
         SavePath = SaveDirectoy + _dirSeperator + SaveFolderName;
 		_saves = new List<stSaveInfo>();
-		_agents = new List<ISaveAndLoadAgent>();        
-		Instance = this;	
+		_agents = new List<ISaveAndLoadAgent>();
+        _currentSave = new stSaveInfo();
+			
 	}
 	
     IEnumerator 	   Start()
 	{
-                
-  
-
-		stSaveInfo saveInfo = new stSaveInfo();
-		saveInfo.filePath = GeneratePath(0);
-        print(saveInfo.filePath);
-		saveInfo.fileInfo.DateAndTime = "2102-03-07 -- 8:01PM";
-		saveInfo.fileInfo.ElapsedTime = "0:0 Min";
-		saveInfo.fileInfo.SaveCount = 0;
-        saveInfo.fileInfo.Index = 0;
-        saveInfo.fileInfo.Scene = "First Scene";
-		_saves.Add(saveInfo);
-		
-	    saveInfo = new stSaveInfo();
-		saveInfo.filePath = GeneratePath(1);
-		saveInfo.fileInfo.DateAndTime = "2102-03-07 -- 8:15PM";
-		saveInfo.fileInfo.ElapsedTime = "0:10 Min";
-		saveInfo.fileInfo.SaveCount = 1;
-        saveInfo.fileInfo.Index = 1;
-        saveInfo.fileInfo.Scene = "Sec Scene";
-		_saves.Add(saveInfo);
-
-	    saveInfo = new stSaveInfo();
-		saveInfo.filePath = GeneratePath(2);
-		saveInfo.fileInfo.DateAndTime = "2102-03-07 -- 8:30PM";
-		saveInfo.fileInfo.ElapsedTime = "0:25 Min";
-		saveInfo.fileInfo.SaveCount = 2;		
-        saveInfo.fileInfo.Index = 2;
-        saveInfo.fileInfo.Scene = "Third Scene";
-		_saves.Add(saveInfo);
+        print("this is a start funtin of save and load");
+        _existingSaveAddress = GetFilesAddress();
+        _saves = RetriveSaves(_existingSaveAddress);   
+        _currentSave = _saves[0];
+        
+        
+        
+//		stSaveInfo saveInfo = new stSaveInfo();
+//		saveInfo.filePath = GeneratePath(0);
+//        print(saveInfo.filePath);
+//		saveInfo.fileInfo.DateAndTime = "2102-03-07 -- 8:01PM";
+//		saveInfo.fileInfo.ElapsedTime = "0:0 Min";
+//		saveInfo.fileInfo.SaveCount = 0;
+//        saveInfo.fileInfo.Index = 2;
+//        saveInfo.fileInfo.Scene = "First Scene";
+//		_saves.Add(saveInfo);
+//		
+//	    saveInfo = new stSaveInfo();
+//		saveInfo.filePath = GeneratePath(1);
+//		saveInfo.fileInfo.DateAndTime = "2102-03-07 -- 8:15PM";
+//		saveInfo.fileInfo.ElapsedTime = "0:10 Min";
+//		saveInfo.fileInfo.SaveCount = 1;
+//        saveInfo.fileInfo.Index = 0;
+//        saveInfo.fileInfo.Scene = "Sec Scene";
+//		_saves.Add(saveInfo);
+//
+//	    saveInfo = new stSaveInfo();
+//		saveInfo.filePath = GeneratePath(2);
+//		saveInfo.fileInfo.DateAndTime = "2102-03-07 -- 8:30PM";
+//		saveInfo.fileInfo.ElapsedTime = "0:25 Min";
+//		saveInfo.fileInfo.SaveCount = 2;		
+//        saveInfo.fileInfo.Index = 1;
+//        saveInfo.fileInfo.Scene = "Third Scene";
+//		_saves.Add(saveInfo);
 
        
-        yield return StartCoroutine(JustWait(1.0f));//wait unitl another Start() functions done.
-      
-       // Save(_saves[2]);
-        GetFilesAddress();
-        GetSaves();
-        print(_saves.Count);
-        print(_saves[0].filePath);
-        print(_saves[1].filePath);
-        print(_saves[2].filePath);
+        yield return StartCoroutine(JustWait(1.0f));//wait unitl other Start() functions done.
         
-//        _currentSaveInfo.filePath = GeneratePath(2);
-//        _currentSaveInfo.info.dateAndTime = "2102-03-07 -- 8:30PM";
-//        _currentSaveInfo.info.elapsedTime = "0:1 Min";
-//        _currentSaveInfo.info.index       = 2;
-//        _currentSaveInfo.info.saveCounts =  2;
+        
+        
+//        Save(_saves[0]);
+//        Save(_saves[1]);
 //        Save(_saves[2]);
         
+//        _existingSaveAddress = GetFilesAddress();
+//            _saves = RetriveSaves(_existingSaveAddress);
+//        print(_saves.Count);
+//        print(_saves[0].fileInfo.Index);
+//        print(_saves[1].fileInfo.Index);
+//        print(_saves[2].fileInfo.Index);
         
-       
         
         
-       // GetSaves();
-        
-       // Load(_saves[2]);
-	   //Save(_saves[0]);
-        
-		
-	}
+    }  
     
     public void        OnSave ()
     {
@@ -248,7 +260,8 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 	public bool        Save(stSaveInfo saveInfo){
 		
 		int index = GetSaveIndex(saveInfo);
-        
+        _currentSave = saveInfo;// must changed
+        SaveCount += 1;
 		_fileStream = File.Open(_saves[index].filePath,FileMode.Create);
 		UpdateInfo(saveInfo);
 		
@@ -326,33 +339,51 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
          return true;
     }
     
+    /// <summary>
+    /// Load just one agent and its clients in specefice save file.
+    /// </summary>
+    /// <param name='path'>
+    /// Save file path.
+    /// </param>
+    /// <param name='agent'>
+    /// Agent for retriving data from save file.
+    /// </param>
     public bool        Load(string path,ISaveAndLoadAgent agent){
         
         string fileName        = Path.GetFileName(path);
         string pathWithoutFile = Path.GetDirectoryName(path); 
         
+        if (agent == null){
+            CDebug.LogError(CDebug.eMessageTemplate.NullParameter);
+            return false;  
+        } 
+        
+        //Check path to isure is not NULL or EMPTY.
         if (string.IsNullOrEmpty(path) == true) {
             CDebug.LogError(CDebug.eMessageTemplate.NullRefrences);
             return false;
         }
-        
+        //Check file name of given path to insure is not invalide.
         if (fileName.IndexOfAny(_invalideFileNameChars) != -1){
             CDebug.LogError(CDebug.eMessageTemplate.InvalideFileName);
             return false;
         }
+        //Check path without file name to insure is not invalide.
         if(pathWithoutFile.IndexOfAny(_invalidePathChars) != -1){
             CDebug.LogError(CDebug.eMessageTemplate.InvalidePathAddress);
             return false;
         }
         
-        if (agent == null) return false;
-        
+        Directory.CreateDirectory(pathWithoutFile);//First create directories cuz File.Open Can not create directories    
         _fileStream = File.Open(path,FileMode.Open);//Open a file stream
-        agent.LoadFromFile(ref _fileStream, _defualtFormatter);
-        for(int i =0; i < agent.ClientsInstances.Count; i++)// call OnLoad() functions
+        bool res = agent.LoadFromFile(ref _fileStream, _defualtFormatter);//call agent's LoadFromFile() function.
+        if (res == false) return false;
+        for(int i = 0; i < agent.ClientsInstances.Count; i++)// call OnLoad() functions
             agent.ClientsInstances[i].OnLoad();
         
+        _fileStream.Close();
         return true;
+        
         
     }
     
@@ -384,13 +415,12 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 		return _saves.IndexOf(si);
 	}
     
-    public string      GetSavePath(stSaveInfo  si){
-        if (si != null)
-            return si.filePath;
-        CDebug.LogError("Null refrence.");
-        return null;
+    public List<stSaveInfo> GetSaves()  {
+        
+        return _saves;
+        
     }
-    	
+    
 	private bool       UpdateInfo(stSaveInfo info){
 		
 		int i = _saves.IndexOf(info);
@@ -406,31 +436,45 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     
     private bool       SaveDirExist(){
           
-        return Directory.Exists(_savePath); 
+        return Directory.Exists(SavePath); 
         
     }
     
-    private bool       GetSaves(){
+    /// <summary>
+    /// Iterate through files from given "path" and fill "_saves" field with informations from files.
+    /// This function will call when the application start.
+    /// </summary>
+    /// <returns>
+    /// The saves.
+    /// </returns>
+    /// <param name='addresses'>
+    /// If set to <c>true</c> addresses.
+    /// </param>
+    private List<stSaveInfo>  RetriveSaves(string[] addresses){
         
         stSaveInfo tmpSaveInfo;
+        List<stSaveInfo> tmpSaves = new List<stSaveInfo>();
         
-        if (SaveDirExist() == false) return false;   
+        if (SaveDirExist() == false){
+            CDebug.LogError("Save directory not exist.");   
+            return null ;
+        }        
         
-        _saves = new List<stSaveInfo>();
-        
-        for (int i = 0; i < _existingSaveAddress.Length ; i++){
-            tmpSaveInfo = new stSaveInfo();
-            Load(_existingSaveAddress[i],(ISaveAndLoadAgent)CSaveFileInfo_SALAgent.Instance);
+        for (int i = 0; i < addresses.Length ; i++){           
+            tmpSaveInfo = new stSaveInfo();            
+            bool res = Load(addresses[i], (ISaveAndLoadAgent)CSaveFileInfo_SALAgent.Instance);
+            if (res == false)
+                continue;
             tmpSaveInfo.fileInfo.DateAndTime = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.DateAndTime;
             tmpSaveInfo.fileInfo.ElapsedTime = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.ElapsedTime;
             tmpSaveInfo.fileInfo.Index       = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.Index;
             tmpSaveInfo.fileInfo.SaveCount   = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.SaveCount;
             tmpSaveInfo.fileInfo.Scene       = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.Scene;
-            tmpSaveInfo.filePath             = _existingSaveAddress[i];
-            _saves.Add(tmpSaveInfo);
+            tmpSaveInfo.filePath             = addresses[i];
+            tmpSaves.Add(tmpSaveInfo);
         }        
-       
-        return true;
+        tmpSaves.Sort(delegate(stSaveInfo s1,stSaveInfo s2){return s1.fileInfo.Index.CompareTo(s2.fileInfo.Index);});
+        return tmpSaves;
 
     }
         
@@ -451,21 +495,27 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     /// return all files address that in defualt save location.
     /// </summary>
     /// <returns>
-    /// The file address.
+    /// Return files addresses. return Null if somthing wrong.
     /// </returns>
-    private void GetFilesAddress()
+    private string[]  GetFilesAddress()
     {
-        if (string.IsNullOrEmpty(_savePath)){
+        if (string.IsNullOrEmpty(SavePath)){
             CDebug.LogError("Path is empty.");
-            return ;
+            return null ;
         }
         if(_savePath.LastIndexOfAny(_invalidePathChars) != -1){
             CDebug.LogError("Path contain invalid characters.");
-            return ;
+            return null ;
         }
-        if (SaveDirExist() == false) return ;
-        _existingSaveAddress = Directory.GetFiles(SavePath);
+        if (SaveDirExist() == false){
+            CDebug.LogError("Save directory not exist.");   
+            return null ;
+        }
         
+        return  Directory.GetFiles(SavePath);
     }
-		
+	
+
+     
+
 }

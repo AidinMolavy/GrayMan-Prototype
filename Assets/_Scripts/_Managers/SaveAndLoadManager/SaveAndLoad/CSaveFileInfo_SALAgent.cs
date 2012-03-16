@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 using System.IO;
@@ -12,8 +13,17 @@ using stSaveFileInfo = CSaveAndLoadTypes.stSaveFileInfo;
 #pragma warning disable 0414
 [System.Serializable]
 public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
- 
-    public static CSaveFileInfo_SALAgent Instance; 
+    
+    private static ArrayList _instances = new ArrayList();
+    
+    public static CSaveFileInfo_SALAgent Instance{
+        get{
+            return (CSaveFileInfo_SALAgent)CSingleton.GetSingletonInstance(
+                ref _instances,typeof(CSaveFileInfo_SALAgent),
+                CGlobalInfo.stSaveAndLoad.TagName,
+                CGlobalInfo.stSaveAndLoad.GameObjectName);
+        }
+    }
     public static CSaveFileInfo_SALAgent Instance_Temp; 
     public stSaveFileInfo SaveFileInfo;
         
@@ -38,16 +48,19 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
     }
     
     void Awake(){
+        //singleton functionality
+        _instances.Add(this) ;
+        CSingleton.DestroyExtraInstances(_instances);
         
         _clientsInstances = new List<ISaveAndloadClient>();
         SaveFileInfo = new stSaveFileInfo();  
-        Instance = this;
+       
         
     }
     
     void Start () {
         
-       CSaveAndLoadManager.Instance.RegisterAgent(this);
+       CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
       
     }
 
@@ -82,11 +95,18 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
     public bool LoadFromFile (ref Stream s, CSaveAndLoadTypes.eFormatters format)
     {
         BinaryFormatter bFormatter;
-        if (format == CSaveAndLoadTypes.eFormatters.Binary){        
-            bFormatter = new BinaryFormatter();
-            Instance_Temp = (CSaveFileInfo_SALAgent)bFormatter.Deserialize(s);
-            
+        try{       
+            if (format == CSaveAndLoadTypes.eFormatters.Binary){        
+                bFormatter = new BinaryFormatter();
+                Instance_Temp = (CSaveFileInfo_SALAgent)bFormatter.Deserialize(s);
+            }
         }
+        catch(SerializationException e){
+            
+            CDebug.LogExError(e.Message);           
+            return false;
+        }
+
         return true;        
     }
 

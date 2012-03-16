@@ -65,4 +65,12 @@ public static class CSaveAndLoadTypes {
         public string   Scene;      
     }
     
+    public class stSaveFunctionParameters{
+        
+        public string path;
+        public ISaveAndLoadAgent Agent;
+        
+        
+    }
+    
 }

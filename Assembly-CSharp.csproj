@@ -56,6 +56,9 @@
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\CiaObject.cs" />
      <Compile Include="Assets\_Scripts\_BaseClasses\iaObject\IState.cs" />
      <Compile Include="Assets\_Scripts\_Helpers\CDebug.cs" />
+     <Compile Include="Assets\_Scripts\_Helpers\CGlobalInfo.cs" />
+     <Compile Include="Assets\_Scripts\_Helpers\CSerialiazatoin.cs" />
+     <Compile Include="Assets\_Scripts\_Helpers\CSingleton.cs" />
      <Compile Include="Assets\_Scripts\_Managers\CManagers.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\CMessageManager.cs" />
      <Compile Include="Assets\_Scripts\_Managers\MessageManager\CMessages.cs" />

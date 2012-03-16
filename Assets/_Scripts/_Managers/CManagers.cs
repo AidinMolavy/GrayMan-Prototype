@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
 public class CManagers : MonoBehaviour {
 
@@ -10,20 +12,29 @@ public class CManagers : MonoBehaviour {
     // All instance that initialized here just can be use in Start() and after(in term of calling time).
     //Do not use this instances in Awake().
     void Awake(){
-        CSaveAndLoadManagerInstance = 
-            (CSaveAndLoadManager)GameObject.FindGameObjectWithTag("SaveAndLoadManager")
-            .GetComponent(typeof(CSaveAndLoadManager)); 
-        
-        CMessageManagerInstance = 
-            (CMessageManager)GameObject.FindGameObjectWithTag("SaveAndLoadManager")
-            .GetComponent(typeof(CSaveAndLoadManager));     
-        
-        if (CSaveAndLoadManagerInstance == null || CMessageManagerInstance ==  null)
-            Debug.LogError("Somthing is wrong. null refrences.");
+
+        DontDestroyOnLoad(this);
     }
-	void Start () {
-	
+	IEnumerator Start () {
+      
+      //CSaveAndLoadManager tmpSal = CSaveAndLoadManager.Instance;
+      //CSaveFileInfo_SALAgent tmpSalAgent = CSaveFileInfo_SALAgent.Instance;  
+        
+	  yield return StartCoroutine(JustWait(1.0f));//wait unitl other Start() functions done.
+      
+      
+      string scene = CSaveAndLoadManager.Instance.CurrentSave.fileInfo.Scene;//get scene name of saved file
+      AsyncOperation op = Application.LoadLevelAsync(scene);//load save's file scene
+        if(op.isDone)
+            CSaveAndLoadManager.Instance.Load(CSaveAndLoadManager.Instance.CurrentSave);
 	}
+    
+    private IEnumerator JustWait(float time){
+        
+        
+        yield return new WaitForSeconds(time);
+        
+    }      
 	
 
 }
