@@ -25,7 +25,6 @@ public class CChair : CiaObject,ISaveAndloadClient {
 	public void OnLoad ()
 	{
 		print("CChair is notifyed about Load.");
-		print("Var 1 = " + var1.ToString() + " var2 =  " + var2.ToString());
 		
 	}
 

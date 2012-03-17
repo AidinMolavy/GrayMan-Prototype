@@ -20,7 +20,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
                 ref _instances,
                 typeof(CSaveAndLoadManager),
                 CGlobalInfo.stSaveAndLoad.TagName,
-                CGlobalInfo.stSaveAndLoad.GameObjectName);                                                       
+                CGlobalInfo.stSaveAndLoad.GameObjectName);
         }
     }
      
@@ -185,10 +185,9 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 	
     IEnumerator 	   Start()
 	{
-        print("this is a start funtin of save and load");
-        _existingSaveAddress = GetFilesAddress();
-        _saves = RetriveSaves(_existingSaveAddress);   
-        _currentSave = _saves[0];
+//        _existingSaveAddress = GetFilesAddress();
+//        _saves = RetriveSaves(_existingSaveAddress);   
+//        _currentSave = _saves[0];
         
         
         
@@ -225,12 +224,11 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         
         
         
-//        Save(_saves[0]);
-//        Save(_saves[1]);
-//        Save(_saves[2]);
+        Save(_saves[0]);
+        Save(_saves[1]);
+        Save(_saves[2]);
         
-//        _existingSaveAddress = GetFilesAddress();
-//            _saves = RetriveSaves(_existingSaveAddress);
+//            Load (CurrentSave);
 //        print(_saves.Count);
 //        print(_saves[0].fileInfo.Index);
 //        print(_saves[1].fileInfo.Index);
@@ -249,9 +247,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     public void        OnLoad (){
         
        print("CsaveAndLoadManager notify about load.");
-       for (int i = 0; i <_saves.Count; i++ ){
-            
-        }
+       
             
      
           
@@ -262,7 +258,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 		int index = GetSaveIndex(saveInfo);
         _currentSave = saveInfo;// must changed
         SaveCount += 1;
-		_fileStream = File.Open(_saves[index].filePath,FileMode.Create);
+		_fileStream = File.Open(_saves[index].filePath,FileMode.Open);
 		UpdateInfo(saveInfo);
 		
 		for (int i = 0; i < _agents.Count; i++ ){
@@ -515,7 +511,5 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         return  Directory.GetFiles(SavePath);
     }
 	
-
-     
 
 }

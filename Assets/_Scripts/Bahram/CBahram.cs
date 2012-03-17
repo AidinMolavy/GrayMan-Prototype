@@ -33,7 +33,7 @@ public class CBahram : CiaObject,ISaveAndloadClient{
     public void OnLoad ()
     {
         print("CBahram notify about load.");
-        print("Var 1 = " + var1.ToString() + " var2 =  " + var2.ToString());    
+
     }
     #endregion
 

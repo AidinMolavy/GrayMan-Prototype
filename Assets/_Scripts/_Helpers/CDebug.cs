@@ -31,12 +31,15 @@ public static class CDebug {
         string tmpStr;        
         tmpStr  = _preFix + _exPreFix + message ;
         Debug.LogError(tmpStr);
-        
-        
     }
     
     public static void LogWarning(string message){
         string tmpStr = _preFix + message;
+        Debug.LogWarning(tmpStr);
+    }
+        public static void LogExWarning(string message){
+        string tmpStr;        
+        tmpStr  = _preFix + _exPreFix + message ;
         Debug.LogWarning(tmpStr);
     }
     

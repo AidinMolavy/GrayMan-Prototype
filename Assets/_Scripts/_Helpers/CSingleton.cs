@@ -9,6 +9,7 @@ public static class CSingleton {
     
     /// <summary>
     /// Gets the singleton instance.
+    /// This function just work for type of classes that inherit form MonoBehavior.
     /// </summary>
     /// <returns>
     /// The singleton instance.
@@ -43,7 +44,7 @@ public static class CSingleton {
                         gos[j].AddComponent(t);
                         return instances[0];
                     }
-                }
+               }
                 gos[0].AddComponent(t);//when no game object's name matced then add script to one of them.
                 CDebug.LogWarning(
                     "Multiple GameObject with tag \""+ tag +"\" detected." +
@@ -56,14 +57,28 @@ public static class CSingleton {
                 return instances[0];
             }
             if(gos.Length <= 0){
-                GameObject go = new GameObject();
+                GameObject go = new GameObject(name);
                 go.AddComponent(t);
                 go.tag  = tag;
-                go.name = name;
                 return instances[0];
             }
         }  
-        return null;        
+        return null;
+    }
+    
+    public static object GetSingletonInstance(ref ArrayList instances,Type t){
+        if (instances.Count == 1)
+            return instances[0];
+        if (instances.Count > 1){
+            CDebug.LogError(CDebug.eMessageTemplate.SomthingIsWrong);
+            return null;
+        }
+        //create instance when no instance exist.
+        if (instances.Count <= 0){//no instance exist                
+            object tmpObj = Activator.CreateInstance(t);
+            return instances[0]; 
+        }
+        return null;
     }
 
     /// <summary>
@@ -77,7 +92,11 @@ public static class CSingleton {
     public static void DestroyExtraInstances(ArrayList instances ){        
         if( instances.Count > 1){
             for(int i = 1; i < instances.Count; i++ ){
-               UnityEngine.Object.Destroy((MonoBehaviour)instances[i]);
+               if(instances[i] is MonoBehaviour)
+                    UnityEngine.Object.Destroy((MonoBehaviour)instances[i]);
+                else if (instances[i] is ScriptableObject)
+                    UnityEngine.Object.Destroy((ScriptableObject)instances[i]);
+                    
                 instances.RemoveAt(i);
             }
         }

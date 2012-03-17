@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+using System;
+using System.Security;
+
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -12,23 +15,21 @@ using stSaveFileInfo = CSaveAndLoadTypes.stSaveFileInfo;
 
 #pragma warning disable 0414
 [System.Serializable]
-public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
+public class CSaveFileInfo_SALAgent : ScriptableObject,ISaveAndLoadAgent {
     
     private static ArrayList _instances = new ArrayList();
     
     public static CSaveFileInfo_SALAgent Instance{
         get{
             return (CSaveFileInfo_SALAgent)CSingleton.GetSingletonInstance(
-                ref _instances,typeof(CSaveFileInfo_SALAgent),
-                CGlobalInfo.stSaveAndLoad.TagName,
-                CGlobalInfo.stSaveAndLoad.GameObjectName);
+                ref _instances,typeof(CSaveFileInfo_SALAgent));
+
         }
     }
     public static CSaveFileInfo_SALAgent Instance_Temp; 
     public stSaveFileInfo SaveFileInfo;
         
     private List<ISaveAndloadClient> _clientsInstances;
-    
     public List<ISaveAndloadClient> ClientsInstances {
         get {
             return _clientsInstances;
@@ -47,22 +48,33 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
         SaveFileInfo.SaveCount   = (int)   info.GetValue("SaveCount",    typeof(int));        
     }
     
-    void Awake(){
+    void OnEnable(){
         //singleton functionality
         _instances.Add(this) ;
-        CSingleton.DestroyExtraInstances(_instances);
+        CSingleton.DestroyExtraInstances(_instances);        
         
         _clientsInstances = new List<ISaveAndloadClient>();
-        SaveFileInfo = new stSaveFileInfo();  
-       
-        
+        SaveFileInfo = new stSaveFileInfo();
+        CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
     }
     
-    void Start () {
-        
-       CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
-      
-    }
+//    void Awake(){
+//        
+//        //singleton functionality
+//        _instances.Add(this) ;
+//        CSingleton.DestroyExtraInstances(_instances);
+//        
+//        _clientsInstances = new List<ISaveAndloadClient>();
+//        SaveFileInfo = new stSaveFileInfo();  
+//       
+//        
+//    }
+//    
+//    void Start () {
+//        
+//       CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
+//      
+//    }
 
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
@@ -87,6 +99,7 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
          if (s == null) {Debug.LogError("Null refrence."); return false;}
          if (format == CSaveAndLoadTypes.eFormatters.Binary){       
              bFormatter = new BinaryFormatter();
+             bFormatter.Binder = new CSerialiazatoin.CVersionDeserializationBinder();
              bFormatter.Serialize(s,this);
          }       
          return true;      
@@ -98,19 +111,29 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
         try{       
             if (format == CSaveAndLoadTypes.eFormatters.Binary){        
                 bFormatter = new BinaryFormatter();
+                bFormatter.Binder = new CSerialiazatoin.CVersionDeserializationBinder();
                 Instance_Temp = (CSaveFileInfo_SALAgent)bFormatter.Deserialize(s);
             }
         }
         catch(SerializationException e){
             
-            CDebug.LogExError(e.Message);           
+            CDebug.LogExWarning(e.Message);
             return false;
         }
+        catch (SecurityException e){
+            
+            CDebug.LogExError(e.Message);
+            return false;
+        }
+        catch (ArgumentNullException e){
+            
+            CDebug.LogExError(e.Message);
+            return false;            
+            
+        }
+            
 
         return true;        
     }
 
-
-
-    
 }

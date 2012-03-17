@@ -17,20 +17,17 @@ public class CManagers : MonoBehaviour {
     }
 	IEnumerator Start () {
       
-      //CSaveAndLoadManager tmpSal = CSaveAndLoadManager.Instance;
-      //CSaveFileInfo_SALAgent tmpSalAgent = CSaveFileInfo_SALAgent.Instance;  
-        
 	  yield return StartCoroutine(JustWait(1.0f));//wait unitl other Start() functions done.
       
       
       string scene = CSaveAndLoadManager.Instance.CurrentSave.fileInfo.Scene;//get scene name of saved file
       AsyncOperation op = Application.LoadLevelAsync(scene);//load save's file scene
-        if(op.isDone)
-            CSaveAndLoadManager.Instance.Load(CSaveAndLoadManager.Instance.CurrentSave);
+      yield return op;//Wait until scene load complete.
+      if(op.isDone)
+        CSaveAndLoadManager.Instance.Load(CSaveAndLoadManager.Instance.CurrentSave);
 	}
     
     private IEnumerator JustWait(float time){
-        
         
         yield return new WaitForSeconds(time);
         
