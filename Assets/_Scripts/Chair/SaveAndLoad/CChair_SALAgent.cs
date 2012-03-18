@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 #pragma warning disable 0414 
 [System.Serializable]
-public class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
+public class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent,ISerializable {
 	
 	private static CChair_SALAgent  Instance;
 	private 	   CChair_SALAgent _instance;//temp
@@ -36,7 +36,7 @@ public class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
 	void        Start()
 	{
 		
-        CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
+        //CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
         _clientsInstances.Add((ISaveAndloadClient)CChair.Instance);
         
 		

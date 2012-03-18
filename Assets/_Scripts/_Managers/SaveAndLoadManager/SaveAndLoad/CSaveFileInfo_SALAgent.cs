@@ -14,85 +14,66 @@ using stInfo      = CSaveAndLoadTypes.stInfo;
 using stSaveFileInfo = CSaveAndLoadTypes.stSaveFileInfo;
 
 #pragma warning disable 0414
-[System.Serializable]
-public class CSaveFileInfo_SALAgent : ScriptableObject,ISaveAndLoadAgent {
+
+//programmer and designer : Aidin Molavy Nejad
+
+/// <summary>
+/// This class is an agetn of the SaveAndLoad system and has no client.
+/// Never instantiate this class. just use "Instance" property.
+/// No need to attached to a GameObject.
+/// This class contain all data that save file need to present.
+/// </summary>
+public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
     
+#region Private fields
     private static ArrayList _instances = new ArrayList();
+    private List<ISaveAndloadClient> _clientsInstances;
+    #endregion
     
+#region Public Fields
+    public static CSaveFileInfo_SALContainer Instance_Container;
+    #endregion
+    
+#region Properties
+    //This property use for implement Singleton pattern.
+    //Every objectes that need access to class functionality most use the property.
     public static CSaveFileInfo_SALAgent Instance{
         get{
             return (CSaveFileInfo_SALAgent)CSingleton.GetSingletonInstance(
-                ref _instances,typeof(CSaveFileInfo_SALAgent));
+                ref _instances,
+                typeof(CSaveFileInfo_SALAgent),
+                CGlobalInfo.stSaveAndLoad.TagName,
+                CGlobalInfo.stSaveAndLoad.GameObjectName);
 
         }
     }
-    public static CSaveFileInfo_SALAgent Instance_Temp; 
-    public stSaveFileInfo SaveFileInfo;
-        
-    private List<ISaveAndloadClient> _clientsInstances;
-    public List<ISaveAndloadClient> ClientsInstances {
+
+    public  List<ISaveAndloadClient> ClientsInstances {
         get {
             return _clientsInstances;
         }
-    }    
-    
-    public CSaveFileInfo_SALAgent(){}
-    
-    public  CSaveFileInfo_SALAgent (SerializationInfo info, StreamingContext context)
-    {
-        SaveFileInfo = new stSaveFileInfo();
-        SaveFileInfo.DateAndTime = (string)info.GetValue("DateAndTime",  typeof(string));
-        SaveFileInfo.ElapsedTime = (string)info.GetValue("ElapsedTime",  typeof(string));        
-        SaveFileInfo.Scene       = (string)info.GetValue("Scene",        typeof(string));
-        SaveFileInfo.Index       = (int)   info.GetValue("Index",        typeof(int));
-        SaveFileInfo.SaveCount   = (int)   info.GetValue("SaveCount",    typeof(int));        
     }
+#endregion
     
-    void OnEnable(){
+  
+#region MonoBehaviour Events
+    
+    void Awake(){
         //singleton functionality
         _instances.Add(this) ;
         CSingleton.DestroyExtraInstances(_instances);        
-        
-        _clientsInstances = new List<ISaveAndloadClient>();
-        SaveFileInfo = new stSaveFileInfo();
-        CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
+      
+        _clientsInstances = new List<ISaveAndloadClient>();        
     }
     
-//    void Awake(){
-//        
-//        //singleton functionality
-//        _instances.Add(this) ;
-//        CSingleton.DestroyExtraInstances(_instances);
-//        
-//        _clientsInstances = new List<ISaveAndloadClient>();
-//        SaveFileInfo = new stSaveFileInfo();  
-//       
-//        
-//    }
-//    
-//    void Start () {
-//        
-//       CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
-//      
-//    }
+    void Start(){
+        CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this); 
+    }
+    
+#endregion
+    
+#region SaveAndLoad Methods
 
-    public void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-     
-        SaveFileInfo.DateAndTime = CSaveAndLoadManager.Instance.DateAndTime;
-        SaveFileInfo.ElapsedTime = CSaveAndLoadManager.Instance.ElapsedTime;       
-        SaveFileInfo.Scene       = CSaveAndLoadManager.Instance.Scene;
-        SaveFileInfo.Index       = CSaveAndLoadManager.Instance.GetSaveIndex(CSaveAndLoadManager.Instance.CurrentSave);
-        SaveFileInfo.SaveCount   = CSaveAndLoadManager.Instance.SaveCount;
-        
-        info.AddValue("DateAndTime", SaveFileInfo.DateAndTime, typeof(string));
-        info.AddValue("ElapsedTime", SaveFileInfo.ElapsedTime, typeof(string));        
-        info.AddValue("Scene",       SaveFileInfo.Scene,       typeof(string));
-        info.AddValue("Index",       SaveFileInfo.Index,       typeof(int));
-        info.AddValue("SaveCount",   SaveFileInfo.SaveCount,   typeof(int));
-        
-    }
-    
     public bool SaveToFile (ref Stream s, CSaveAndLoadTypes.eFormatters format)
     {
          BinaryFormatter bFormatter;
@@ -100,7 +81,7 @@ public class CSaveFileInfo_SALAgent : ScriptableObject,ISaveAndLoadAgent {
          if (format == CSaveAndLoadTypes.eFormatters.Binary){       
              bFormatter = new BinaryFormatter();
              bFormatter.Binder = new CSerialiazatoin.CVersionDeserializationBinder();
-             bFormatter.Serialize(s,this);
+             bFormatter.Serialize(s,CSaveFileInfo_SALContainer.Instance);
          }       
          return true;      
     }
@@ -112,7 +93,7 @@ public class CSaveFileInfo_SALAgent : ScriptableObject,ISaveAndLoadAgent {
             if (format == CSaveAndLoadTypes.eFormatters.Binary){        
                 bFormatter = new BinaryFormatter();
                 bFormatter.Binder = new CSerialiazatoin.CVersionDeserializationBinder();
-                Instance_Temp = (CSaveFileInfo_SALAgent)bFormatter.Deserialize(s);
+                Instance_Container = (CSaveFileInfo_SALContainer)bFormatter.Deserialize(s);
             }
         }
         catch(SerializationException e){
@@ -134,6 +115,9 @@ public class CSaveFileInfo_SALAgent : ScriptableObject,ISaveAndLoadAgent {
             
 
         return true;        
-    }
+        }
+    
+#endregion
+    
 
 }

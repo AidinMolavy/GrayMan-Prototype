@@ -69,6 +69,7 @@
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoadAgent.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndloadClient.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveFileInfo_SALAgent.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveFileInfo_SALContainer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

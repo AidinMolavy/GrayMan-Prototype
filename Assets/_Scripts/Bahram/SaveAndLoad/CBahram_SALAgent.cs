@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 #pragma warning disable 0414 
 [System.Serializable]
-public class CBahram_SALAgent : MonoBehaviour,ISaveAndLoadAgent  {
+public class CBahram_SALAgent : MonoBehaviour,ISaveAndLoadAgent ,ISerializable {
 	
 	
     private CBahram_SALAgent _instance;
@@ -52,7 +52,7 @@ public class CBahram_SALAgent : MonoBehaviour,ISaveAndLoadAgent  {
         
         
         //Registr this agent to the list of "CSaveAndLoadManager" agents.        
-        CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
+        //CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
         
         //this agent Save its clients.
         //will use for "OnSave()" and "OnLoad()" calling from "CSaveAndLoadManager"        

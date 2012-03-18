@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 
-public interface ISaveAndLoadAgent : ISerializable
+public interface ISaveAndLoadAgent
 {
 	List<ISaveAndloadClient> ClientsInstances{get;}
 	

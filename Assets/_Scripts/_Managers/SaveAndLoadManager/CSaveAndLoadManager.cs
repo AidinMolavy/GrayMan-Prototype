@@ -185,12 +185,19 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 	
     IEnumerator 	   Start()
 	{
-//        _existingSaveAddress = GetFilesAddress();
-//        _saves = RetriveSaves(_existingSaveAddress);   
-//        _currentSave = _saves[0];
+        _existingSaveAddress = GetFilesAddress();
+        _saves = RetriveSaves(_existingSaveAddress);
+        if(SaveExist() == false){
+            CDebug.LogError("No Save File Founded.");
+            yield break; 
+        }
+        _currentSave = _saves[0];
         
-        
-        
+        print(_saves[2].fileInfo.SaveCount);
+//        
+//         CSaveFileInfo_SALContainer c = CSaveFileInfo_SALContainer.Instance;
+//         c.SaveFileInfo.Index = 4;
+//        print(c.SaveFileInfo.Index);
 //		stSaveInfo saveInfo = new stSaveInfo();
 //		saveInfo.filePath = GeneratePath(0);
 //        print(saveInfo.filePath);
@@ -224,9 +231,9 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         
         
         
-        Save(_saves[0]);
-        Save(_saves[1]);
-        Save(_saves[2]);
+//        Save(_saves[0]);
+//        Save(_saves[1]);
+//        Save(_saves[2]);
         
 //            Load (CurrentSave);
 //        print(_saves.Count);
@@ -258,7 +265,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 		int index = GetSaveIndex(saveInfo);
         _currentSave = saveInfo;// must changed
         SaveCount += 1;
-		_fileStream = File.Open(_saves[index].filePath,FileMode.Open);
+		_fileStream = File.Open(_saves[index].filePath,FileMode.Create);
 		UpdateInfo(saveInfo);
 		
 		for (int i = 0; i < _agents.Count; i++ ){
@@ -373,7 +380,10 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         Directory.CreateDirectory(pathWithoutFile);//First create directories cuz File.Open Can not create directories    
         _fileStream = File.Open(path,FileMode.Open);//Open a file stream
         bool res = agent.LoadFromFile(ref _fileStream, _defualtFormatter);//call agent's LoadFromFile() function.
-        if (res == false) return false;
+        if (res == false) {
+            _fileStream.Close();    
+            return false;   
+        }
         for(int i = 0; i < agent.ClientsInstances.Count; i++)// call OnLoad() functions
             agent.ClientsInstances[i].OnLoad();
         
@@ -415,6 +425,12 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         
         return _saves;
         
+    }
+    
+    public bool SaveExist(){
+        if (_saves.Count <= 0)
+            return false;
+        return true;
     }
     
 	private bool       UpdateInfo(stSaveInfo info){
@@ -461,11 +477,11 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
             bool res = Load(addresses[i], (ISaveAndLoadAgent)CSaveFileInfo_SALAgent.Instance);
             if (res == false)
                 continue;
-            tmpSaveInfo.fileInfo.DateAndTime = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.DateAndTime;
-            tmpSaveInfo.fileInfo.ElapsedTime = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.ElapsedTime;
-            tmpSaveInfo.fileInfo.Index       = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.Index;
-            tmpSaveInfo.fileInfo.SaveCount   = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.SaveCount;
-            tmpSaveInfo.fileInfo.Scene       = CSaveFileInfo_SALAgent.Instance_Temp.SaveFileInfo.Scene;
+            tmpSaveInfo.fileInfo.DateAndTime = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.DateAndTime;
+            tmpSaveInfo.fileInfo.ElapsedTime = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.ElapsedTime;
+            tmpSaveInfo.fileInfo.Index       = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.Index;
+            tmpSaveInfo.fileInfo.SaveCount   = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.SaveCount;
+            tmpSaveInfo.fileInfo.Scene       = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.Scene;
             tmpSaveInfo.filePath             = addresses[i];
             tmpSaves.Add(tmpSaveInfo);
         }        
