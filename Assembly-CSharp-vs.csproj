@@ -67,6 +67,7 @@
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadTypes.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoadAgent.cs" />
+     <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndLoadContainer.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\ISaveAndloadClient.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveFileInfo_SALAgent.cs" />
      <Compile Include="Assets\_Scripts\_Managers\SaveAndLoadManager\SaveAndLoad\CSaveFileInfo_SALContainer.cs" />

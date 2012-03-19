@@ -54,7 +54,6 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
         }
     }
 #endregion
-    
   
 #region MonoBehaviour Events
     
