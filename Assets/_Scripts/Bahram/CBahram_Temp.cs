@@ -31,5 +31,6 @@ public class CBahram_Temp : MonoBehaviour,ISaveAndloadClient {
     public void OnLoad (){
         
         print("CBahram_Temp notify from load.");
+        print ("Cbahram_Temp data values are : var1 : " + var1 + " var2 : " + var2);
     }
 }

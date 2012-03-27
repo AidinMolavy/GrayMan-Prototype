@@ -14,10 +14,11 @@ using stInfo      = CSaveAndLoadTypes.stInfo;
 using stSaveFileInfo = CSaveAndLoadTypes.stSaveFileInfo;
 
 [System.Serializable]
-public sealed class CSaveFileInfo_SALContainer : ISerializable  {
+public sealed class CSaveFileInfo_SALContainer : ISaveAndLoadContainer  {
     
 #region Private Fields
     private static ArrayList _instances = new ArrayList();
+    private static CSaveFileInfo_SALContainer _instance_load;
 #endregion
     
 #region Public Fields
@@ -25,17 +26,27 @@ public sealed class CSaveFileInfo_SALContainer : ISerializable  {
 #endregion
     
 #region Properties
-    public static CSaveFileInfo_SALContainer Instance{
-    get{
-        return (CSaveFileInfo_SALContainer)CSingleton.GetSingletonInstance(
-            ref _instances, 
-            typeof(CSaveFileInfo_SALContainer));
+    public new static CSaveFileInfo_SALContainer Instance_Save{
+        get{
+            return (CSaveFileInfo_SALContainer)CSingleton.GetSingletonInstance(
+                ref _instances, 
+                typeof(CSaveFileInfo_SALContainer));
+        }
     }
-}
+        
+    public new  static CSaveFileInfo_SALContainer Instance_Load{
+        get{
+            return _instance_load;
+        }
+        set{
+            _instance_load = value;
+        }
+   }
+
 #endregion
     
 #region Constructors
-    public CSaveFileInfo_SALContainer(){
+    public CSaveFileInfo_SALContainer() : base(){
         //singleton system
         _instances.Add(this);
         CSingleton.DestroyExtraInstances(_instances);
@@ -44,7 +55,7 @@ public sealed class CSaveFileInfo_SALContainer : ISerializable  {
     }
 
     //Serializatoin counstructor
-    public  CSaveFileInfo_SALContainer (SerializationInfo info, StreamingContext context){      
+    public  CSaveFileInfo_SALContainer (SerializationInfo info, StreamingContext context) : base(info, context){      
     SaveFileInfo = new stSaveFileInfo();
     SaveFileInfo.DateAndTime = (string)info.GetValue("DateAndTime",  typeof(string));
     SaveFileInfo.ElapsedTime = (string)info.GetValue("ElapsedTime",  typeof(string));        
@@ -55,7 +66,7 @@ public sealed class CSaveFileInfo_SALContainer : ISerializable  {
 #endregion
     
     //serialiazation method call when save happend
-    public void GetObjectData (SerializationInfo info, StreamingContext context){
+    public override void GetObjectData (SerializationInfo info, StreamingContext context){
      
         SaveFileInfo.DateAndTime = CSaveAndLoadManager.Instance.DateAndTime;
         SaveFileInfo.ElapsedTime = CSaveAndLoadManager.Instance.ElapsedTime;       

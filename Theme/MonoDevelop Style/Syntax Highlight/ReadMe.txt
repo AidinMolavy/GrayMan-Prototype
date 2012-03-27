@@ -1,0 +1,1 @@
+in monodevelop IDE go to the  tools->Options->Syntax Highlighting and press Add button and add "Aidin's Oblivion" to it.

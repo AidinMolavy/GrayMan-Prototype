@@ -26,13 +26,13 @@ using stSaveFileInfo = CSaveAndLoadTypes.stSaveFileInfo;
 public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
     
 #region Private fields
-    private static ArrayList _instances = new ArrayList();
+    private static ArrayList         _instances = new ArrayList();
     private List<ISaveAndloadClient> _clientsInstances;
-    #endregion
+#endregion
     
 #region Public Fields
-    public static CSaveFileInfo_SALContainer Instance_Container;
-    #endregion
+
+#endregion
     
 #region Properties
     //This property use for implement Singleton pattern.
@@ -53,6 +53,7 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
             return _clientsInstances;
         }
     }
+    
 #endregion
   
 #region MonoBehaviour Events
@@ -80,7 +81,7 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
          if (format == CSaveAndLoadTypes.eFormatters.Binary){       
              bFormatter = new BinaryFormatter();
              bFormatter.Binder = new CSerialiazatoin.CVersionDeserializationBinder();
-             bFormatter.Serialize(s,CSaveFileInfo_SALContainer.Instance);
+             bFormatter.Serialize(s,CSaveFileInfo_SALContainer.Instance_Save);
          }       
          return true;      
     }
@@ -92,7 +93,7 @@ public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
             if (format == CSaveAndLoadTypes.eFormatters.Binary){        
                 bFormatter = new BinaryFormatter();
                 bFormatter.Binder = new CSerialiazatoin.CVersionDeserializationBinder();
-                Instance_Container = (CSaveFileInfo_SALContainer)bFormatter.Deserialize(s);
+                CSaveFileInfo_SALContainer.Instance_Load = (CSaveFileInfo_SALContainer)bFormatter.Deserialize(s);
             }
         }
         catch(SerializationException e){

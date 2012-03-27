@@ -193,14 +193,13 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         }
         _currentSave = _saves[0];
         
-        print(_saves[2].fileInfo.SaveCount);
-//        
+      
+        
 //         CSaveFileInfo_SALContainer c = CSaveFileInfo_SALContainer.Instance;
 //         c.SaveFileInfo.Index = 4;
 //        print(c.SaveFileInfo.Index);
 //		stSaveInfo saveInfo = new stSaveInfo();
 //		saveInfo.filePath = GeneratePath(0);
-//        print(saveInfo.filePath);
 //		saveInfo.fileInfo.DateAndTime = "2102-03-07 -- 8:01PM";
 //		saveInfo.fileInfo.ElapsedTime = "0:0 Min";
 //		saveInfo.fileInfo.SaveCount = 0;
@@ -228,21 +227,14 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 
        
         yield return StartCoroutine(JustWait(1.0f));//wait unitl other Start() functions done.
+
+      
+        Load (CurrentSave);
+
+              
+        print(CChair.Instance.var1);
         
-        
-        
-//        Save(_saves[0]);
-//        Save(_saves[1]);
-//        Save(_saves[2]);
-        
-//            Load (CurrentSave);
-//        print(_saves.Count);
-//        print(_saves[0].fileInfo.Index);
-//        print(_saves[1].fileInfo.Index);
-//        print(_saves[2].fileInfo.Index);
-        
-        
-        
+           
     }  
     
     public void        OnSave ()
@@ -477,11 +469,11 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
             bool res = Load(addresses[i], (ISaveAndLoadAgent)CSaveFileInfo_SALAgent.Instance);
             if (res == false)
                 continue;
-            tmpSaveInfo.fileInfo.DateAndTime = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.DateAndTime;
-            tmpSaveInfo.fileInfo.ElapsedTime = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.ElapsedTime;
-            tmpSaveInfo.fileInfo.Index       = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.Index;
-            tmpSaveInfo.fileInfo.SaveCount   = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.SaveCount;
-            tmpSaveInfo.fileInfo.Scene       = CSaveFileInfo_SALAgent.Instance_Container.SaveFileInfo.Scene;
+            tmpSaveInfo.fileInfo.DateAndTime = CSaveFileInfo_SALContainer.Instance_Load.SaveFileInfo.DateAndTime;
+            tmpSaveInfo.fileInfo.ElapsedTime = CSaveFileInfo_SALContainer.Instance_Load.SaveFileInfo.ElapsedTime;
+            tmpSaveInfo.fileInfo.Index       = CSaveFileInfo_SALContainer.Instance_Load.SaveFileInfo.Index;
+            tmpSaveInfo.fileInfo.SaveCount   = CSaveFileInfo_SALContainer.Instance_Load.SaveFileInfo.SaveCount;
+            tmpSaveInfo.fileInfo.Scene       = CSaveFileInfo_SALContainer.Instance_Load.SaveFileInfo.Scene;
             tmpSaveInfo.filePath             = addresses[i];
             tmpSaves.Add(tmpSaveInfo);
         }        

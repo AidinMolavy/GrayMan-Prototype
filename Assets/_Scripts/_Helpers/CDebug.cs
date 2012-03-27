@@ -9,7 +9,8 @@ public static class CDebug {
         InvalidePathAddress,
         EmptyOrNullString,
         NullParameter,
-        SomthingIsWrong
+        SomthingIsWrong,
+        NotImplemented
         
     }
     
@@ -61,6 +62,8 @@ public static class CDebug {
             return "NUll Parameter Is Not Accepted.";
         case eMessageTemplate.SomthingIsWrong :
             return "Somthing IS Wrong. This Error Must Never Happend.";
+        case eMessageTemplate.NotImplemented :
+            return "You Are Using Method or Propety That Is Not Implemented. Please Implement It First.";         
         default :
             return "Template not implemented.";
         }

@@ -1,0 +1,1 @@
+Copy "gtkrc" to "Unity\MonoDevelop\share\themes\MS-Windows\gtk-2.0" nad rename the existing file to somthing like "gtkrcOriginal"

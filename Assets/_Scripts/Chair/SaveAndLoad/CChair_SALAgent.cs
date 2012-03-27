@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 using System.IO;
@@ -7,57 +8,66 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 #pragma warning disable 0414 
 [System.Serializable]
-public class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent,ISerializable {
+public  class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
 	
-	private static CChair_SALAgent  Instance;
-	private 	   CChair_SALAgent _instance;//temp
-	private        List<ISaveAndloadClient> _clientsInstances;
-    private        GameObject               _parent;
+#region Private Fields
+
+    private static ArrayList                _instances = new ArrayList();//Part of singleton system.
+    private        List<ISaveAndloadClient> _clientsInstances;    
+#endregion
+
+#region Public Fields
+    
 	public         int var1;
 	public         int var2;
-	
+    
+#endregion
+
+#region Properties
+    
+    public static CChair_SALAgent Instance{
+        get{
+            return (CChair_SALAgent)CSingleton.GetSingletonInstance(
+                ref _instances,
+                typeof(CChair_SALAgent),
+                CGlobalInfo.stSaveAndLoad.TagName,
+                CGlobalInfo.stSaveAndLoad.GameObjectName);
+
+        }
+    } 
 	public List<ISaveAndloadClient> ClientsInstances {
 		get {
 			return this._clientsInstances;
 		}
 	}
-	
-	public      CChair_SALAgent(){
-		
-	}
-	
-	void        Awake(){
     
-        _parent = gameObject;//no use currently     
+#endregion	
+    
+#region MonoBehaviour
+    
+	void        Awake(){
+        
+
+        //singleton functionality
+        _instances.Add(this) ;
+        CSingleton.DestroyExtraInstances(_instances);  
+            
 		_clientsInstances = new List<ISaveAndloadClient>();//just init.     
-        _instance = null;//stop warrning
 	}
 	
 	void        Start()
 	{
 		
-        //CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
+        CSaveAndLoadManager.Instance.RegisterAgent((ISaveAndLoadAgent)this);
         _clientsInstances.Add((ISaveAndloadClient)CChair.Instance);
         
 		
 	}
     
-	public      CChair_SALAgent(SerializationInfo info,StreamingContext context)
-	{
-		var1 = (int)info.GetValue("var1",typeof(int));
-		var2 = (int)info.GetValue("var2",typeof(int));
-		CChair.Instance.var1 = var1;
-		CChair.Instance.var2 = var2;
-	}
-	
-	public void GetObjectData (SerializationInfo info, StreamingContext context)
-	{
-		var1 = CChair.Instance.var1;
-		var2 = CChair.Instance.var2;
-		info.AddValue("var1",var1);
-		info.AddValue("var2",var2);
-	}
-	
+#endregion  	
+
+#region ISaveAndLoadAgent Implementation
+    
 	public bool SaveToFile (ref System.IO.Stream s,CSaveAndLoadTypes.eFormatters format)
 	{
 		BinaryFormatter bFormatter;
@@ -65,7 +75,7 @@ public class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent,ISerializable {
 		if (format== CSaveAndLoadTypes.eFormatters.Binary){
 			
 			bFormatter = new BinaryFormatter();
-			bFormatter.Serialize(s,this);
+			bFormatter.Serialize(s,CChair_SALContainer.Instance_Save);
 		}
 		
 		return true;
@@ -77,9 +87,11 @@ public class CChair_SALAgent : MonoBehaviour,ISaveAndLoadAgent,ISerializable {
 		if (format== CSaveAndLoadTypes.eFormatters.Binary){
 			
 			bFormatter = new BinaryFormatter();
-	        _instance = (CChair_SALAgent)bFormatter.Deserialize(s);
+	        CChair_SALContainer.Instance_Load = (CChair_SALContainer)bFormatter.Deserialize(s);
 		}
 		return true;
 		
 	}
+    
+#endregion
 }
