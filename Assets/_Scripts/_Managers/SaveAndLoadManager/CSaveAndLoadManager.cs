@@ -12,15 +12,18 @@ using stSAL         = CSaveAndLoadTypes.stSAL;
 public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 
     private static ArrayList _instances = new ArrayList();
-    
+    private bool _isStartDone;
     public static CSaveAndLoadManager Instance{
         
         get{
+            
             return (CSaveAndLoadManager)CSingleton.GetSingletonInstance( 
-                ref _instances,
-                typeof(CSaveAndLoadManager),
-                CGlobalInfo.stSaveAndLoad.TagName,
-                CGlobalInfo.stSaveAndLoad.GameObjectName);
+            ref _instances,
+            typeof(CSaveAndLoadManager),
+            CGlobalInfo.stSaveAndLoad.TagName,
+            CGlobalInfo.stSaveAndLoad.GameObjectName);
+            
+            
         }
     }
      
@@ -40,7 +43,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 	private const string      		_defualtFileName  = "save";
 	private const eFormatters       _defualtFormatter = eFormatters.Binary;
     
-    #region SaveFile
+#region SaveFile
     private int                     _saveCount;
     private string                  _elapsedTime;
     private string                  _dateAndTime;
@@ -70,9 +73,9 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         }
 
     }
-    #endregion
+#endregion
     
-    #region FileAddress
+#region FileAddress
     private string[]     _existingSaveAddress;//Contain address of files that exist in default save path.
     private string       _currentDirectory;    
     private string       _saveDirectory;//Default directory path of save file.(not contain save folder name)
@@ -161,8 +164,10 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
               _saveName = value;     
         }
     }
-    #endregion
-   
+#endregion
+    
+#region MonoBehaviour    
+    
 	void               Awake(){
         
         DontDestroyOnLoad(this);
@@ -236,6 +241,8 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         
            
     }  
+    
+#endregion
     
     public void        OnSave ()
     {

@@ -46,18 +46,20 @@ public static class CSingleton {
                         return instances[0]; 
                     }
                }
-                gos[0].AddComponent(t);//when no game object's name matced then add script to one of them.
-                CDebug.LogWarning(
+                gos[0].AddComponent(t);//when no game object's name matced then add script to one of theme.
+                CDebug.LogWarning(//every thing is ok. but you better know what is going on.
                     "Multiple GameObject with tag \""+ tag +"\" detected." +
-                     "Anyway i add \""+ t.FullName +"\" script to one of them that name is \""+ gos[0].name + "\".");
+                    "Anyway i add \""+ t.FullName +
+                    "\" script to one of them that name is \""+ gos[0].name + "\"."
+                    );
                 return instances[0];
                 
             }
-            if(gos.Length == 1){
+            if(gos.Length == 1){//Just one GameObject exist. so add component to it.
                 gos[0].AddComponent(t);
                 return instances[0];
             }
-            if(gos.Length <= 0){
+            if(gos.Length <= 0){//No GameObject exist. Create one and add component to it.
                 GameObject go = new GameObject(name);
                 go.AddComponent(t);
                 go.tag  = tag;
@@ -67,16 +69,16 @@ public static class CSingleton {
         return null;
     }
     
-    // ScriptableObject Singleton
+    // Non "MonoBehaviour" Singleton
     /// <summary>
     /// Get the singleton instance.
-    /// This overload work just for object that inherit from "ScriptableObject".
+    /// This overload work just for objects that do not inherit form "MonoBehaviour".
     /// </summary>
     /// <returns>
     /// The singleton instance.
     /// </returns>
     /// <param name='instances'>
-    /// List of instance. Must inherit form "ScriptableObject" 
+    /// List of instance.
     /// </param>
     /// <param name='t'>
     /// Type of the class.
@@ -89,16 +91,22 @@ public static class CSingleton {
             return null;
         }
         //create instance when no instance exist.
-        if (instances.Count <= 0){//no instance exist
-            if(t.IsSubclassOf(typeof(ScriptableObject)))
-                ScriptableObject.CreateInstance(t);
+        if (instances.Count <= 0){
+            if (t.IsSubclassOf(typeof(MonoBehaviour))){
+                CDebug.LogError("This overload of \"GetSingletonInstance()\"" +
+                    "function just worke with non \"MonoBehaviour\" objects." +
+                    " use \"MonoBehaviour\" overload instead."
+                    );
+                return null;
+            }
+            if (t.IsSubclassOf(typeof(ScriptableObject)))//If inherit from "ScriptableObject".
+                ScriptableObject.CreateInstance(t);//Creat instance that suitable for "ScriptableObject".
             else
-                Activator.CreateInstance(t);
+                Activator.CreateInstance(t);//t is not a "ScriptableObject" or "MonoBehavoir".
             return instances[0]; 
         }
         return null;
     }
-    
     
     /// <summary>
     /// Destroies the extra instances.

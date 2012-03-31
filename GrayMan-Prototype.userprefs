@@ -1,8 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_Scripts\Chair\CChair.cs">
     <Files>
-      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" Line="232" Column="28" />
+      <File FileName="Assets\_Scripts\_Managers\SaveAndLoadManager\CSaveAndLoadManager.cs" Line="178" Column="22" />
+      <File FileName="Assets\_Scripts\Chair\SaveAndLoad\CChair_SALContainer.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\Chair\SaveAndLoad\CChair_SALAgent.cs" Line="1" Column="1" />
+      <File FileName="Assets\_Scripts\Chair\CChair.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -10,10 +13,10 @@
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="_Scripts" expanded="True">
-                <Node name="_Managers" expanded="True">
-                  <Node name="SaveAndLoadManager" expanded="True">
-                    <Node name="CSaveAndLoadManager.cs" selected="True" />
-                  </Node>
+                <Node name="_Managers" expanded="True" />
+                <Node name="Chair" expanded="True">
+                  <Node name="SaveAndLoad" expanded="True" />
+                  <Node name="CChair.cs" selected="True" />
                 </Node>
               </Node>
             </Node>
