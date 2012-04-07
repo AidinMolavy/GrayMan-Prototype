@@ -7,136 +7,77 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 /// <summary>
 ///  message manager.
-///  must have just one instace in entire program.
-///  can not be a base class.
 /// </summary>
- public sealed class  CMessageManager : MonoBehaviour,IMessageSubject {
+ public static  class  CMessageManager  {
+    
+#region Types
+    
+    public delegate void MessageDelegate(CMessages.eMessages m,object data);
+    
+#endregion
+    
+#region Public Fields
+    public  static MessageDelegate       MessageEvent;
+#endregion
+    
+#region Private Fields
+    
+    private static List<IMessageObsever> _observers;// list of observers.used by NotifyObservers().
+	private static CMessages.eMessages   _message;  // message itself.
+	private static object                _data;     // message's data.	
+    
+#endregion
+
+#region Conusructors
+    
+    static  CMessageManager(){
+        
+        _observers = new List<IMessageObsever>();        
+        
+    }
+    
+#endregion
 	
-	public static CMessageManager Instance;  //class instance.through this can access to public methods.
-	
-    private List<IMessageObsever> _observers;// list of observers.used by NotifyObservers().
-	private CMessages.eMessages   _message;  // message itself.
-	private object                _data;     // message's data.	
-	
-	
-	void Awake ()
-	{
-		
-		Instance = this;
-		_observers = new List<IMessageObsever>(); 
-				
-	}
-	
-	void Start()
-	{
-		//just for testing
-		
-		
-//		CBahram.Instance.var1 = 100;
-//		CBahram.Instance.var2 = 200;
-//		CChair.Instance.var1 = 300;
-//		CChair.Instance.var2 = 400;
-//		
-//		//Save 		
-//		
-//		Stream stream =  File.Open("save",FileMode.Create);
-//		BinaryFormatter bFormatter = new BinaryFormatter();
-//		bFormatter.Serialize(stream,CBahram_Save.Instance);
-//		//bFormatter.Serialize(stream,CChair_SAL.Instance);
-//		stream.Close();
-//		
-//		CBahram.Instance.var1 = 5;
-//		CBahram.Instance.var2 = 6;
-//		CChair.Instance.var1  = 7;
-//		CChair.Instance.var2  = 8;		
-//		
-//		//Load
-//		stream = File.Open("Save",FileMode.Open);
-//		bFormatter = new BinaryFormatter();
-//		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
-//		//CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
-//		stream.Close();
-//		
-//		//print
-//		//print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
-//		//print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
-//		
-//		
-//		
-//		CBahram.Instance.var1 = 10;
-//		CBahram.Instance.var2 = 20;
-//		CChair.Instance.var1 = 30;
-//		CChair.Instance.var2 = 40;
-//		
-//		
-//		//Save 2
-//	    stream =  File.Open("save",FileMode.Create);
-//	    bFormatter = new BinaryFormatter();
-//		bFormatter.Serialize(stream,CBahram_Save.Instance);
-//		//bFormatter.Serialize(stream,CChair_SAL.Instance);
-//		stream.Close();
-//
-//		CBahram.Instance.var1 = 5;
-//		CBahram.Instance.var2 = 6;
-//		CChair.Instance.var1  = 7;
-//		CChair.Instance.var2  = 8;		
-//
-//		
-//		//Load 2
-//		stream = File.Open("Save",FileMode.Open);
-//		bFormatter = new BinaryFormatter();
-//		CBahram_Save.Instance =  (CBahram_Save)bFormatter.Deserialize(stream);
-//		//CChair_SAL.Instance =  (CChair_SAL)bFormatter.Deserialize(stream);
-//		stream.Close();
-		
-		
-		//print
-		//print(CBahram.Instance.var1 + "    " + CBahram.Instance.var2);
-		//print(CChair.Instance.var1 + "    " + CChair.Instance.var2);
-		
-		
-	}
-	
+#region Public Methods
+    
 	/// <summary>
 	/// Registers the observer.
 	/// </summary>
 	/// <param name='o'>
 	/// o object will recive messages.
 	/// </param>
-	public void RegisterObserver(IMessageObsever o)
+	public static void RegisterObserver(IMessageObsever o)
 	{
 		if (_observers.Contains(o) == false)
 			_observers.Add(o);
 		
 	}
-	
+    
+    public static void RegisterObserver(MessageDelegate o)
+    {
+        
+        MessageEvent += o;
+    }	
+    
 	/// <summary>
 	/// Removes the observer.
 	/// </summary>
 	/// <param name='o'>
 	/// object that do not want to receive messages.
 	/// </param>
-	public bool RemoveObserver(IMessageObsever o){
+	public static bool RemoveObserver(IMessageObsever o){
 		
 		if (_observers.Count > 0)
 			return _observers.Remove(o);
 		return true;
 	}
+    
+    public static void RemoveObserver(MessageDelegate o){
+     
+        MessageEvent -= o;
+    }    
 	
-	/// <summary>
-	/// Notifies the obsevers.
-	/// This function called when message was sent.
-	/// must be private.
-	/// </summary>
-	public void NotifyObsevers()
-	{
-		
-		for(int i = 0; i < _observers.Count ; i++)
-		{
-			_observers[i].MessageReceived(_message,_data);
-		}
-	}
-	
+  
 	/// <summary>
 	/// Sends the message to all observers.
 	/// </summary>
@@ -147,13 +88,31 @@ using System.Runtime.Serialization.Formatters.Binary;
 	/// Data that message carry.
 	/// In case message has no data set it to null.
 	/// </param>
-	public void SendMessage(CMessages.eMessages m,object data)
+	public static void SendMessage(CMessages.eMessages m,object data)
 	{
 		_message = m;
 		_data    = data;
 		NotifyObsevers();
 	}
 	
-	
-
+#endregion
+ 
+#region Private Methods    
+    
+/// <summary>
+ /// Notifies the obsevers.
+ /// This function called when message was sent.
+ /// </summary>
+ private static void NotifyObsevers(){
+        
+     MessageEvent(_message, _data);
+     for(int i = 0; i < _observers.Count ; i++)
+     {
+         _observers[i].OnMessage(_message,_data);
+     }
+        
+ }
+    
+#endregion    
+    
 }

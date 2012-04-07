@@ -8,20 +8,29 @@ public class CChair : CiaObject,ISaveAndloadClient {
 	//private CChair_SALAgent salAgent;
 	public int var1,var2;
     public string[] str1;
-		
+	public IState FirstState;
+    
 	void Awake(){
 		
-		
+		FirstState = new CChair_STT_First(this);
 		var1 = 3;
 		var2 = 4;
         str1 = new string[3];
         str1[0] = "chari1";
         str1[1] = "chari2";
         str1[2] = "chari3";
+        
         Instance = this;
 
         
 	}
+    
+    void Start(){
+        
+        GoToState(ref FirstState);
+        
+    }
+        
     
 	public void OnSave ()
 	{

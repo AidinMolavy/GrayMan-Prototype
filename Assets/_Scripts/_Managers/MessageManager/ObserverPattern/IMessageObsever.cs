@@ -4,6 +4,7 @@ using System;
 public interface IMessageObsever {
 	
 
-	  void  MessageReceived(CMessages.eMessages m,object data);
-
+	 void  OnMessage(CMessages.eMessages m,object data);
+     
+        
 }

@@ -8,18 +8,28 @@ public class CBahram : CiaObject,ISaveAndloadClient{
 	public static CBahram Instance;
 	
 	public int var1,var2;
-
+    public IState FirstState;
+    public IState SecondState;
+    
     #region MonoBehavior
      void Awake()
      {
+        FirstState  = new CBahram_STT_First(this);
+        SecondState = new CBahram_STT_Second(this);
         var1 = 1;
         var2 = 2;
         Instance = this;         
+        
      }
      
-     void Start()
+     IEnumerator Start()
      {
-         
+        GoToState(ref FirstState); 
+        GoToState(ref SecondState);
+        yield return new WaitForSeconds(1);
+        CMessageManager.SendMessage(CMessages.eMessages.ActionPressed,null);
+        
+
 
      }
     #endregion

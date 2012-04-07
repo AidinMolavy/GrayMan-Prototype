@@ -6,7 +6,7 @@ using System.IO;
 public class CManagers : MonoBehaviour {
 
 	// Use this for initialization
-    public static CMessageManager     CMessageManagerInstance;
+    //public static CMessageManager     CMessageManagerInstance;
     public static CSaveAndLoadManager CSaveAndLoadManagerInstance;
     
     // All instance that initialized here just can be use in Start() and after(in term of calling time).
