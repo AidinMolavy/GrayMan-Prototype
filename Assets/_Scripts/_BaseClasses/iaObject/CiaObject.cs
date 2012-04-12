@@ -9,10 +9,10 @@ public abstract class CiaObject : MonoBehaviour {
     
 #region Fields
     
-	private IState _currnetState;
-	private IState _preState;
-    private bool   _updateCurrnetState;//specify that current state need to be update or not.
-    protected  List<IState> States;
+	private    IState       _currnetState;
+	private    IState       _preState;
+    private    bool         _updateCurrnetState;//specify that current state need to be update or not.
+    protected  List<IState> States;//list of all states that sub class created.
     
 #endregion
 
@@ -21,7 +21,7 @@ public abstract class CiaObject : MonoBehaviour {
     void Awake(){
         
         States = new List<IState>();    
-        _updateCurrnetState = false;//"GoToState()" function will change this value.
+        _updateCurrnetState = false;//"GoToState()" function manage this value.
     }
     
     void Update(){
@@ -44,7 +44,7 @@ public abstract class CiaObject : MonoBehaviour {
     		_preState = _currnetState;
     		_currnetState = state;
             StartCoroutine(_currnetState.OnBegin());
-            _updateCurrnetState = true;//Current state changed and need to start "OnUpdate()" envent restart.;
+            _updateCurrnetState = true;//Current state changed and need to start "OnUpdate()" envent again.;
             return true;
         }
         CDebug.LogError("Can not change state.");

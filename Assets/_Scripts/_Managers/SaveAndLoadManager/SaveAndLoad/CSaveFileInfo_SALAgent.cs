@@ -15,8 +15,6 @@ using stSaveFileInfo = CSaveAndLoadTypes.stSaveFileInfo;
 
 #pragma warning disable 0414
 
-//programmer and designer : Aidin Molavy Nejad
-
 /// <summary>
 /// This class is an agetn of the SaveAndLoad system and has no client.
 /// Never instantiate this class. just use "Instance" property.
@@ -24,14 +22,14 @@ using stSaveFileInfo = CSaveAndLoadTypes.stSaveFileInfo;
 /// This class contain all data that save file need to present.
 /// </summary>
 public class CSaveFileInfo_SALAgent : MonoBehaviour,ISaveAndLoadAgent {
+
+#region Public Fields
+
+#endregion
     
 #region Private fields
     private static ArrayList         _instances = new ArrayList();
     private List<ISaveAndloadClient> _clientsInstances;
-#endregion
-    
-#region Public Fields
-
 #endregion
     
 #region Properties

@@ -23,8 +23,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 #region Private Fields
     
     private static List<IMessageObsever> _observers;// list of observers.used by NotifyObservers().
-	private static CMessages.eMessages   _message;  // message itself.
-	private static object                _data;     // message's data.	
+	private static CMessages.eMessages   _message;  // message itself. All messages need to add to the enumerator first.
+	private static object                _data;     // message's data.Cant be null when no data needed.
     
 #endregion
 
@@ -46,15 +46,14 @@ using System.Runtime.Serialization.Formatters.Binary;
 	/// <param name='o'>
 	/// o object will recive messages.
 	/// </param>
-	public static void RegisterObserver(IMessageObsever o)
-	{
+	public static void RegisterObserver(IMessageObsever o){
+	
 		if (_observers.Contains(o) == false)
 			_observers.Add(o);
 		
 	}
     
-    public static void RegisterObserver(MessageDelegate o)
-    {
+    public static void RegisterObserver(MessageDelegate o){
         
         MessageEvent += o;
     }	

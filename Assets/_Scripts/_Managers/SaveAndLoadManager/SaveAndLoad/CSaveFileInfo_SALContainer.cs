@@ -26,6 +26,7 @@ public sealed class CSaveFileInfo_SALContainer : ISaveAndLoadContainer  {
 #endregion
     
 #region Properties
+    
     public new static CSaveFileInfo_SALContainer Instance_Save{
         get{
             return (CSaveFileInfo_SALContainer)CSingleton.GetSingletonInstance(

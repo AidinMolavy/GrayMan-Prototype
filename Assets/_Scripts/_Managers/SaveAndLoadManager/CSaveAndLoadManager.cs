@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System;
+
 using stSaveInfo    = CSaveAndLoadTypes.stSaveInfo;
 using stInfo        = CSaveAndLoadTypes.stInfo;
 using eFormatters   = CSaveAndLoadTypes.eFormatters;
@@ -11,37 +12,46 @@ using stSAL         = CSaveAndLoadTypes.stSAL;
 
 public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 
-    private static ArrayList _instances = new ArrayList();
-    private bool _isStartDone;
+    
+#region Public Fields
+    
+#endregion
+    
+#region Private Fields
+    
+    private stSaveInfo              _currentSave;
+    private static ArrayList        _instances = new ArrayList();//Part of Singleton System.
+	private List<ISaveAndLoadAgent> _agents;//list of agents(Classes that implement ISaveAndLoadAgent).
+	private Stream      		    _fileStream;     
+	private List<stSaveInfo>  		_saves;//List of all saved file and theire informations.  
+	private const string			_defualtFilePath  = "\\Save";  
+	private const string      		_defualtFileName  = "save";
+	private const eFormatters       _defualtFormatter = eFormatters.Binary;
+    
+#endregion
+    
+#region Properties
+    
+    //Singleton Instance.
     public static CSaveAndLoadManager Instance{
-        
         get{
             
+            //Part of Singleton System.
             return (CSaveAndLoadManager)CSingleton.GetSingletonInstance( 
             ref _instances,
             typeof(CSaveAndLoadManager),
             CGlobalInfo.stSaveAndLoad.TagName,
             CGlobalInfo.stSaveAndLoad.GameObjectName);
-            
-            
         }
     }
      
-    private stSaveInfo  _currentSave;	
-
-    public stSaveInfo CurrentSave {
+    public  stSaveInfo CurrentSave {
         get {
             return this._currentSave;
         }
-    }
-
-	private List<ISaveAndLoadAgent> _agents;//list of agents(Classes that implement ISaveAndLoadAgent).
-	//private List<ISaveAndLoadAgent> _agents_Exclude;//list of object that dont need to save or load.
-	private Stream      		    _fileStream;     
-	private  List<stSaveInfo>  		_saves;//List of all saved file and theire informations.  
-	private const string			_defualtFilePath  = "\\Save";  
-	private const string      		_defualtFileName  = "save";
-	private const eFormatters       _defualtFormatter = eFormatters.Binary;
+    } 
+    
+#endregion
     
 #region SaveFile
     private int                     _saveCount;
@@ -168,35 +178,35 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     
 #region MonoBehaviour    
     
-	void               Awake(){
+    void         Awake(){
         
         DontDestroyOnLoad(this);
         
-        _instances.Add(this);// used for implement singleton pattern
-        CSingleton.DestroyExtraInstances(_instances); // remove all of instances of this class except first one.
+        _instances.Add(this);// Part of singleton system.
+        CSingleton.DestroyExtraInstances(_instances); // Part of singleton system.
 		
         _invalideFileNameChars = Path.GetInvalidFileNameChars();
         _invalidePathChars     = Path.GetInvalidPathChars();
-        _currentDirectory = Directory.GetCurrentDirectory();             
-        SaveName       =   "save";        
-        SaveFolderName = "TmpSave";  
-        SaveDirectoy = _currentDirectory;      
-        SavePath = SaveDirectoy + _dirSeperator + SaveFolderName;
-		_saves = new List<stSaveInfo>();
-		_agents = new List<ISaveAndLoadAgent>();
-        _currentSave = new stSaveInfo();
+        _currentDirectory      = Directory.GetCurrentDirectory();             
+        SaveName               = "save";        
+        SaveFolderName         = "TmpSave";  
+        SaveDirectoy           = _currentDirectory;      
+        SavePath               = SaveDirectoy + _dirSeperator + SaveFolderName;
+		_saves                 = new List<stSaveInfo>();//Contain all saves.
+		_agents                = new List<ISaveAndLoadAgent>();//list of all save and load agents.
+        _currentSave           = new stSaveInfo();
 			
 	}
 	
-    IEnumerator 	   Start()
+    IEnumerator  Start()
 	{
         _existingSaveAddress = GetFilesAddress();
         _saves = RetriveSaves(_existingSaveAddress);
-        if(SaveExist() == false){
-            CDebug.LogError("No Save File Founded.");
+        if(_saves.Count <= 0){
+            CDebug.LogError("No Save File Founde.");
             yield break; 
         }
-        _currentSave = _saves[0];
+        _currentSave = _saves[0];//just for now.
         
       
         
@@ -231,21 +241,19 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 //		_saves.Add(saveInfo);
 
        
-        yield return StartCoroutine(JustWait(1.0f));//wait unitl other Start() functions done.
+        yield return new WaitForSeconds(1.0f);;//wait unitl other Start() functions done.
 
       
         Load (CurrentSave);
-
-              
-        print(CChair.Instance.var1);
-        
-           
+                 
     }  
     
 #endregion
+
+#region Events
     
-    public void        OnSave ()
-    {
+    public void        OnSave (){
+    
         print("CsaveAndLoadManager notify about save.");
             
     }
@@ -253,12 +261,12 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     public void        OnLoad (){
         
        print("CsaveAndLoadManager notify about load.");
-       
-            
-     
-          
+   
     }
-	
+    
+#endregion
+    
+#region Public Methods	
 	public bool        Save(stSaveInfo saveInfo){
 		
 		int index = GetSaveIndex(saveInfo);
@@ -394,15 +402,18 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     
 	public void        RegisterAgent (ISaveAndLoadAgent agent)
 	{
-		if (agent == null) Debug.LogError("Null refrence here.");
-		if (_agents.Contains(agent) == false)//we dont want to have multiple of same instance of agent.
+		if (agent == null) CDebug.LogError(CDebug.eMessageTemplate.NullRefrences);
+		if (_agents.Contains(agent) == false)//We dont want to have multiple of same instance of agent.
 			_agents.Add(agent);
 			
 	}
 				
 	public bool    	   RemoveAgent (ISaveAndLoadAgent agent){
 		
-		//need debug "agent!= null"
+		if(agent == null){
+            CDebug.LogError(CDebug.eMessageTemplate.NullRefrences);
+            return false;
+        }
 		return _agents.Remove(agent);
 	}
 	
@@ -425,13 +436,9 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         return _saves;
         
     }
+#endregion
     
-    public bool SaveExist(){
-        if (_saves.Count <= 0)
-            return false;
-        return true;
-    }
-    
+#region Private Methods    
 	private bool       UpdateInfo(stSaveInfo info){
 		
 		int i = _saves.IndexOf(info);
@@ -453,6 +460,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
     
     /// <summary>
     /// Iterate through files from given "path" and fill "_saves" field with informations from files.
+    /// Retrived inofrmation used for self explaning save file.
     /// This function will call when the application start.
     /// </summary>
     /// <returns>
@@ -493,14 +501,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
 	{
 		
 		return SavePath + _dirSeperator + SaveName + i.ToString(_saveFileFormat);
-	}
-    
-    private IEnumerator JustWait(float time){
-        
-        
-        yield return new WaitForSeconds(time);
-        
-    }          
+	}         
     
     /// <summary>
     /// return all files address that in defualt save location.
@@ -525,6 +526,7 @@ public class CSaveAndLoadManager : MonoBehaviour,ISaveAndloadClient {
         
         return  Directory.GetFiles(SavePath);
     }
+#endregion
 	
 
 }

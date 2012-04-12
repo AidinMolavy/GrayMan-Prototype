@@ -22,6 +22,7 @@ public abstract class ISaveAndLoadContainer : ISerializable  {
     }
    
    public ISaveAndLoadContainer(){}
+    
    public ISaveAndLoadContainer(SerializationInfo info, StreamingContext context){}
     
     //Serialization method. Override this method in derived function.

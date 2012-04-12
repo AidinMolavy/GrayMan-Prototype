@@ -10,8 +10,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 public static class CSerialiazatoin  {
 
-    // === This is required to guarantee a fixed serialization assembly name, which Unity likes to randomize on each compile
-    // Do not change this
+    /// <summary>
+    /// This is required to guarantee a fixed serialization assembly name,
+    /// which Unity likes to randomize on each compile.
+    /// Do not change this.
+    /// </summary>
     public  class CVersionDeserializationBinder : SerializationBinder 
     { 
         public override Type BindToType( string assemblyName, string typeName )
